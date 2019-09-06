@@ -1,0 +1,144 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Software Testing \& Evaluation}
+In this chapter, we discuss the ways in which we debugged and tested our prototype both on the client and server side and the tools used in doing so.
+We also give a user evaluation for our final prototype applied on 5 participants using the User Experience Questionnaire\footnote{\protect\url{https://www.ueq-online.org/}}. After analysing the questionnaire's results, we can deduce that our application is somewhat successful and appreciated by the users.
+
+%The evaluation
+ %We also reflect on the development process with the encountered difficulties and in which ways our final product diverts from the initial requirements and expectations. We will also discuss the ways in which we tested our prototype for its correct working.
+
+
+\section{Software Testing}
+Our prototype application developed with our framework required some extensive testing and debugging in order to work properly. It required a variety of tools to be used that we will give an overview of. Most of our tests for the application focused on the connectivity of involved devices and the correct delivery of data packets between them.
+
+\subsection{Client Side}
+Testing the client focused on its proper connection with the server and on properly receiving data packets through our network. Its written code contains a stream socket used as an endpoint for receiving packets. Sending packets back to the server was unnecessary since the communication flow of our application goes from the server to its clients.
+
+\paragraph{Unity editor for Debugging}
+Since the HoloLens was much slower when it came to deployment compared to the Unity editor, it was easier to use the latter of the two to send instructions through the network. By using the host device's keyboard, we could send out instructions to the client's endpoint socket. 
+
+\paragraph{Display Screen}
+To analyse which instructions would be properly received by our EV3 brick\footnote{\protect\url{https://shop.lego.com/en-US/product/EV3-Intelligent-Brick-45500}}, we would use its display screen to print out all messages it would receive by the stream socket. We could then configure the robot to properly react on the given instructions on the network. The Unity editor's keyboard allowed us to send specific displacement instructions to the robot to calibrate it even further as to make it more responsive. 
+
+\paragraph{Eclipse Breakpoints}
+Eclipse\footnote{\protect\url{https://www.eclipse.org/}} is a very popular integrated development environment for Java programming among others. It has a base workspace and an extensible plug-in system that would allow programming in other languages giving the right plug-ins.
+%\newline
+For the development of our client it provides us with breakpoints. This handy tool allows us to do an intentional stopping or pausing of a running program at a certain place for debugging purposes. This helps us to determine if the program executes in a correct fashion. If a bug or failure would occur at runtime we could pause the program just before its occurrence and analyse every passing instruction to see how we came to that bug. 
+
+\subsection{Server Side}
+For the same reason as with the client side testing, we primarily used the Unity editor when debugging the server. This proved faster in deploying the server though it did not allow us to test all of its features. Since in the final application the server was supposed to be hosted on the immersive device, we eventually were forced to use it for further testing.
+
+\paragraph{Unity Editor Testing}
+By running the Unity editor in play mode, the server would be executed in a matter of seconds. Evaluating the server happened in two steps.
+%\newline
+The first step involved using the Packet Sender\footnote{\protect\url{https://packetsender.com/}} app for sending and receiving network packets using the Transfer Control Protocol among others. We first had to specify the IP address and port number of the connected device on the network to which a test packet should be send. If no error message would occur after sending the package, we could be sure that the device was open for connection.
+%\newline
+The second step involved pressing the arrow buttons on the desktop keyboard and by using the console, we could see which instructions were passed through our network. 
+
+\paragraph{HoloLens Testing}
+Each time we would like to test improvements on the UWP server we had make a new build, compile it on our Microsoft Visual Studio\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft_Visual_Studio}} IDE and then upload it on the HoloLens. This whole process would easily take a dozen minutes to complete. Debugging proved difficult on the HoloLens, using breakpoints on Microsoft Visual Studios did manage us to open the ports of the immersive device but sending out packets to the clients was not that clear using breakpoints. We managed to send out data packets to the client after a lot of trial and error.
+%To speed up deployment, we used the HoloLens Emulator\footnote{\protect\url{https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-hololens-emulator}} to test out client connection. In the first iterations of the UWP server, only a continuous stream of 1's would be sent through just to test the basic workings of the network socket. We used the emulator to test this basic functionality.
+%\newline
+%For further interface testing, we had no choice but to use the HoloLens. The voice commands and interface buttons would be calibrated on the robot's movements.
+
+\paragraph{Multiple Clients}
+Allowing for more than one client to connect to the server and request its services required using threads for the Unity server and tasks for the UWP server respectively. In both cases, the server would keep a list of references to the connected clients to allow for client-specific packets to be sent. Testing this out required using a second EV3 brick and seeing to which client specifically data was being sent.
+
+
+\newpage
+\section{Evaluation}
+We wanted to measure the user's general attitudes and emotions when interacting with its provided interfaces to assess the success of our final prototype. For this, we made use of the User Experience Questionnaire\footnote{\protect\url{https://www.ueq-online.org/}} providing a fast and reliable way to measure the user experience of our interactive product. We included the used document for the evaluation in Appendix B. The server is the user's mayor point of interaction and it has two possible host devices with different methods for user input. Reason why we applied the questionnaire on five users when interacting with the desktop computer and the HoloLens separately to measure the success of both interfaces independently.
+
+
+\subsection{User Experience Questionnaire}
+The original German version of the UEQ was created in 2005. After several studies and iterations through the years, its final questionnaire consists of 26 questions that are rated on a scale of 1 to 7. Each question is represented by two terms with opposite meanings on the opposite sides of the scale. Giving the final ratings happens in accordance with 6 usability scales with each questionnaire item belonging to one of them.
+
+\paragraph{Usability Scales}
+Each scale is linked to a particular aspect of the interactive experience and ---when taken together--- gives an idea of the relative success of the user application. The questionnaire's scales are the following:
+\begin{itemize}
+	\item Attractiveness: the appearance of the interface: how pretty, friendly and enjoyable it looks for the user.
+	\item Efficiency: the degree in which tasks can be performed quickly, efficiently and pragmatically. The user should perform the least amount of work and achieve the most in as little time possible.
+	\item Perspicuity: the product is easy to understand and simple. The user should pick it up rather quickly and easily.
+	\item Dependability: the whole user experience is secure and predictable. A secure interface means that interaction is safe and controllable for the user.
+	\item Stimulation: the user's excitement and pleasure when using the application. The measure in which the prototype is fun to use.
+	\item Novelty: the product is innovative and creative.
+	
+\end{itemize}
+
+\paragraph{Analysis}
+The questionnaire was applied on 5 participants and we interpreted the means of the scales because the questionnaire does not produce a percentual rating of the user experience. By analysing the distribution of the results we came to some interesting findings.
+%\newline
+The data analysis Excel sheets provided on the questionnaire's website\footnote{\protect\url{https://www.ueq-online.org/}} contained a dataset to compare our user results with. It contains data from 18483 persons from 401 studies concerning different products (business software, web pages, web shops, social networks) forming a benchmark to compare our results with.
+
+\subsection{Desktop Interface }
+When the server runs on the Unity editor hosted on a desktop computer, the keyboard is used as input method. Since a tangible keyboard is much more familiar to use than voice commands, it can be expected that the general user opinion would give a preference to the desktop interface. To promote ease of use, the Unity editor's scene view has a three-dimensional manual to explain which buttons trigger which actions and a notifications text. The arrow buttons can be used to move the robot. The user can also choose whether to send instructions to all clients simultaneously (A) or one client specifically (Z). It is also allowed to switch between clients using button C on the keyboard.
+
+%\paragraph{Keyboard Commands}
+%The arrow buttons move the robot in 4 directions with the upper arrow button making it go forward, the lower arrow button backward, the left arrow to the left and the right arrow to the right. Not pressing any of the arrow buttons makes the robot stop.
+%\newline
+%The server is multithreaded and allows for the connection of multiple clients and for the user to select to which clients to send instructions. By pressing button A, the same instructions passed by the arrow buttons would be sent to all connected clients. Pressing button Z would result in sending instructions to only one client with button C allowing to switch between our sets of connected clients.
+
+\paragraph{Mean Results}
+The results of the questionnaire showed a high standard deviation indicating significant data dispersions and variations. This can be attributed to the low number of participants. Attractiveness, perspicuity and stimulation were the best scoring scales indicating that the interface is user-friendly, easy to pick up and exciting to use. The three-dimensional manual displayed on the Unity editor clarifies to the user which buttons to use and because of the presence of technology these days, it is normal that all participants can get along with the computer's keyboard. Robot control is responsive and it shows in the user's stimulation ratings when using the application.
+\newpage
+\begin{figure}[!htb]
+	\includegraphics[width=0.7\textwidth]{images/DesktopInterfaceMeans.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Even with great data dispersion, we can see that most means of the scales have a positive evaluation. Novelty scored the poorest. } 
+\end{figure}
+
+Novelty on the other hand scored poorly. An explanation for this is the host device's keyboard because is not a new or unconventional method for user input. For the opinions on the dependability of the application, they vary greatly from mediocre to good. This can be attributed to the fact that some users found the controls for client selection not clear in spite of our extended explanations.
+%Some users also misinterpreted part of the evaluation's questions. In spite of our extended explanations to the participants on the questions' meaning, some of them confused the word secure with data security instead of safety and controllability. 
+
+\paragraph{Benchmark}
+Comparing our survey with the benchmark dataset indicated that our interface performs above average compared to other software interfaces.
+Switching and selecting clients was at times a little confusing because the user does not get precise indications of which client in the environment is selected. Novelty was below average because we did not try something creative in terms of user input methods.
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/DesktopInterfaceBenchmark.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Our desktop interface scored below average in terms of dependability and novelty. Other aspects of the user experience scored very well showing that our interface is rated 'above average' for our benchmark. } 
+\end{figure}
+
+\paragraph{Verdict}
+Based on the questionnaire's mean scores and the comparison with the benchmark dataset, we can assume our desktop interface is successful. Although the mean scores for dependability and novelty showed mediocre results ---being ranked below average relative to the benchmark dataset--- the users were satisfied in terms of attractiveness, perspicuity and efficiency.
+
+\subsection{HoloLens Interface}
+Compared to a desktop computer, our immersive device has no tangible interface such as a keyboard or joystick. It is just a pair of smart glasses enabling Mixed Reality, this prompted us to use less conventional ways for user input such as voice commands. With this input method the user has to shout short keywords to let the robot move forward, backward, left and right. He can also select the clients to which instructions should be sent. He can go through the connected clients to select the right one also by voice commands.
+
+\paragraph{Mean Results}
+The results for each scale have lower standard variations compared to the desktop interface results. Reason for this is that the participants never used an immersive device before. Given answers align more with each other because they participants had no previous experience with the hardware to give a more profound opinion their interaction with the device.
+%\newline
+What also stands out is that our interface scores poorly in efficiency and dependability. Voice commands take some time to be understood by the HoloLens meaning there's a significant delay in sending the instructions to the client. Expressibility with voice commands is lower compared to a more intuitive keyboard requiring more effort from the user in completing certain tasks.
+%\newline
+The low scores for dependability can be attributed to the voice commands and significant delay between receiving and executing movement instructions.
+On occasions, voice commands are not well understood by the keyword manager increasing the unpredictable nature of the experience.
+
+\newpage
+\begin{figure}[!htb]
+	\includegraphics[width=0.7\textwidth]{images/HoloLensInterfaceMeans.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Low scores for efficiency and dependability are due to the delay of voice commands and their lack of expressibility.} 
+\end{figure}
+
+The interface scored well in terms of perspicuity, stimulation and novelty. Voice commands only required users to speak out specific keywords that were short and easy to remember resulting in an interface that was easy to learn and remember. The users thought the whole experience was enjoyable and innovative due to Mixed Reality technology being not very widespread as a technology. Nevertheless, voice commands proved a good choice for the perspicuity of the prototype.
+
+
+\paragraph{Benchmark}
+The lower scores also reflect in the benchmark comparison. Efficiency and dependability both score much lower than the benchmark average with a mediocre rating for attractiveness.
+Due to the futuristic nature of the HoloLens immersive device and the ease of use of voice commands, the interface has good to excellent scores in terms of novelty and perspicuity.
+
+\newpage
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/HoloLensInterfaceBenchmark.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{The results show that in terms of efficiency and dependability, our interface scores poorly. There is significant delay in processing voice commands on our immersive device and keywords are sometimes not properly understood by the voice manager.} 
+\end{figure}
+
+
+\paragraph{Verdict}
+The user experience for the HoloLens was mixed. Its interface is innovative and easy to pick up yet voice commands are sometimes not well understood due to poor user voice expression. It also suffers from significant delay in processing voice commands. All these shortcomings can be put on the HoloLens' hardware and not on the interface design itself.
+

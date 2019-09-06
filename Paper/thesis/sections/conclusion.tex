@@ -1,0 +1,55 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Conclusion}
+In this chapter, we conclude our thesis by giving a last overview of the work undertaken in developing our navigation framework. We reflect on the development process and on how some requirements had to be altered due to encountered difficulties. We end our thesis by discussing possible improvements for our framework to be realised in future work.
+
+\section{Conclusion}
+We have worked in accordance with the Design Science Research Methodology for information systems\cite{peffers2007design}. In the introduction, we identified the problem domains for our research effort and defined our objectives for success. The literature study allowed us to gather concepts and techniques for Mixed Reality as a baseline to define our application's requirements. We ended our related work with the functional requirements for our framework: robot navigation, user input, object tracking, mapping virtual information on the environment and spatial awareness. 
+\newpage
+
+In the next chapter, we gave a high-level overview of how we realised each functional requirement from previous chapter. We discuss each component and folder of the framework's software package and how object tracking, voice command recognition and communication was achieved. One of our problem domains from the introduction was to explore the possibility of using a peer-to-peer model for implementation instead of a client-server model. This is why we wrote a section about system design arguing which model would be best suited for our framework and subsequent prototype application. We ended this section by stating that implementing the peer-to-peer model was realistic indicated by already existing technology\cite{keller2002toward} in Augmented Reality using this model. We eventually went for the client-server model because it already took a lot of time to realise due to the implementation challenges with the HoloLens. We did not have enough time left to try realising the peer-to-peer model on our framework.
+
+After giving the high-level explanation of the navigation framework, we continued on to the low-level implementation details. Our focus lied on the used toolkits for the framework and on the scripts we wrote for voice command recognition and the server component. By adding these scripts to a new scene, their functionalities can be activated.
+
+Where the two previous chapters discussed our framework and its implementation, the next chapter talked about the subsequent Mixed Reality game we developed as a its technical evaluation. Because of deployment issues faced on the HoloLens with the Vuforia engine, we have two scenes with one having all object tracking functionalities disabled. The client application was developed fully independently from the framework. We talked about its client code, the Mindstorms robot host with its new firmware and how data packets were passed through the network to the client's endpoint. We end this chapter by covering the game views for when the application is hosted on the Unity editor and the HoloLens device respectively.
+
+The next chapter deals with software testing and user evaluation. We give an overview of how we tested our application on both the client and server side and which tools we used in doing so.
+For the evaluation, we made use of the User Experience Questionnaire\footnote{\protect\url{https://www.ueq-online.org/}}. We gathered 5 student participants and made them interact on both the desktop computer and on the HoloLens respectively. We compared results of both which each other and also with a benchmark dataset provided on the questionnaire's website.
+We noticed that our desktop interface was efficient for performing user tasks and relatively easy to learn but that it lacked creativeness compared to the benchmark dataset and the HoloLens user experience. Using the keyboard is a popular yet very orthodox method for user input so this could be expected.
+Voice commands on the immersive device were very easy to use and a novelty for the participants. It scored low in terms of efficiency and dependability requiring much more effort from the user to perform tasks compared to a keyboard. Overall, both user experiences were somewhat successful.
+
+The whole thesis revolved around developing a framework that would allow us to create an application that could mimic Microsoft's demo\footnote{\protect\url{https://www.youtube.com/watch?v=xnrHFV34PfM}} on the HoloLens' cross-space capabilities. During the development process however, we encountered some technical issues on our immersive device and had to change the requirements a bit. We ended by discussing possible future improvements for our framework.
+
+
+\section{Reflection}
+Development of the client application happened smoothly with the installation of the robot's new firmware and the writing of the client code being achieved in the month of April. Developing the server code however proved more difficult. There were library incompatibilities between the two platforms on which the server had to be executed and we faced deployment issues with our immersive device.
+%There were still some issues encountered in developing the server code and deploying it on our immersive device. 
+%Development was plagued by deployment issues with the HoloLens and library incompatibilities when coding. The HoloLens is one of the first commercially available head-mounted devices on the market which means such technical issues could be expected. 
+
+\subsection{Implementation Challenges}
+As was mentioned in previous section, the Unity editor and the Universal Windows Platform use different libraries for the C\# programming language. We were obliged to write two different codes in the same server file separated by preprocessor directives. This complicated the development process for the server code. Debugging the server for the HoloLens was made more difficult compared to the Unity editor because of long deployment time. Executing the code on the editor happened instantly compared to a dozen of minutes for the HoloLens.
+
+\subsection{Deployment Issues}
+The Vuforia engine worked properly on the Unity editor using the device's front web camera to track the target objects. Deployment on the HoloLens immersive device was a different story. It worked well on the Unity editor but crashed when applied on the immersive device requiring further configurations. For our demonstration, we deactivated all object tracking features to allow for proper deployment.
+
+
+\subsection{Changed Requirements}
+For our literature study, we said we would like to implement path-finding in our application by allowing the user to place waypoints in the environment with eye gaze and selection. These functional requirements were unfortunately never met because of deployment issues.
+Given the faced issues, a realisable method to allow for user input to guide the robot around was to use voice commands. It allows us to move the robot in any wanted direction.
+
+
+\section{Future Work}
+We now discuss aspects of our framework to which we could apply improvements in later development. As was mentioned previously we encountered difficulties prompting us to alter our functional requirements in terms of navigating game objects and user input methods.
+
+Introducing our problem domains, we specified that our framework should allow for the correct navigation of game objects in a dynamic environment. The subsequent prototype application developed using said framework achieved this on the desktop computer. In spite of our best efforts, navigating objects on the HoloLens was not achieved because of faulty deployment. If we were to do further development on our framework, this is one of the key problems to solve. A possible reason for the faulty deployment would be a faulty integration of the three-dimensional scan of the target in the tracking engine. The scan was made by using the provided application\footnote{\protect\url{https://developer.vuforia.com/downloads/tool}} on the engine's developer portal. It was experimental and this might have caused the deployment issues on the HoloLens. A solution would be to develop our own three-dimensional mesh of the target Mindstorms robot. By passing this mesh to the tracking engine, we should achieve object tracking and correct deployment on the imemersive device.
+%is was achieved when running the application on the desktop computer: by using the device's webcam, a virtual object could track the target. 
+%We could run the tracking engine on our desktop   Because of deployment issues, this was made impossible. It is imperative that for later development, this be solved.
+
+Our framework uses a client-server architecture. In the prototype application, our HoloLens immersive device acts as server and the mobile robots as client. We did not have time to realise the peer-to-peer model for our framework but implementing it in future development could be interesting. Our system design section mentions other software projects who successfully implemented this architecture in the field of Augmented Reality. 
+
+User experience on both devices have room for improvements. The desktop interface performed well in efficiency and perspicuity: tasks could be completed efficiently and the interface was easy to learn. Its biggest fault was the lack of creativity and novelty by using the desktop's keyboard for user input. Exploring more innovative methods for input such as handheld controllers can resolve this in future work.
+
+The HoloLens experience on the other hand was innovative and creative but lacked efficiency and dependability. Completing tasks on the device required more effort from the user and ---occasionally--- voice commands were not processed correctly. Implementing our initial methods for user input ---waypoints and path-finding--- in future work could improve efficiency.
+
+
+

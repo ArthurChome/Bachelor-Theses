@@ -1,0 +1,234 @@
+\documentclass{article}
+
+% Used packages
+\usepackage{apacite}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{blindtext}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[explicit,noindentafter]{titlesec}
+
+\bibliographystyle{apacite}
+
+\titlespacing\section{1pt}{0pt plus 0pt minus 0pt}{0pt plus 0pt minus 0pt}
+\titlespacing\subsection{1pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{1pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+% New commands
+\newcommand{\addsection}[3]{\addtocontents{toc}{\protect\contentsline{section}{\protect\numberline{#1}#2}{#3}}}
+\newcommand{\addsubsection}[3]{\addtocontents{toc}{\protect\contentsline{subsection}{\protect\numberline{#1}#2}{#3}}}
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.5\textwidth}\rlap{#1}}
+\newcommand{\Csh}{C{\lserif\#}}
+
+ 
+ \begin{document}
+\begin{titlepage}
+	\begin{center}
+		\vspace*{1cm}
+		
+		\Huge
+		\textbf{RoboMR: A Mixed Reality Robotic Game}
+		
+		\vspace{0.5cm}
+		\LARGE
+		
+		\textbf{Arthur Chomé}
+		
+		\vfill
+		
+		Graduation thesis presented for the degree of\\
+		Bachelor in Computer Sciences
+		
+		\vspace{0.8cm}
+
+		\Large
+		Faculty of Sciences and Bio-Engineering Sciences\\
+		Vrije Universiteit Brussel \\
+		Belgium\\
+		
+	\end{center}
+\end{titlepage}
+	% Construct contents
+	\tableofcontents	
+	\newpage
+
+\section{Abstract}
+\section{Introduction}
+Video games have been around for a relatively long time. More precisely, it is thought that it all started in October 1958 with the  invention of a very simple tennis game by physicist William Higinbotham. It was quite a hit in his research lab and it eventually grew into the game that everybody knows as Pong.
+
+%Since then, the industry grew: more and more video games started to pop out with increasingly complex gameplay objectives. The 70's and 80's witnessed the surge of gaming's greatest classics: Space Invaders, Donkey Kong, Pacman,... All these games have in common that they were in 2D perspective and had limited immersion for the players.
+
+%The next step was creating a 3D environment that increased the immersive experience. Because of hardware limitations of the 90's, it was still virtually impossible to run real 3D engines in realtime. The solution for this problem was raycasting: a rendering technique to create a 3D perspective in a 2D map. The most known game to make use of it is Wolfenstein 3D. The first game that offered full real-time 3D rendering was Quake in 1996.
+
+The game industry continued to grow from the 1970's onward. We are now at the 8th console generation with incredibly immersive 3D games like Red Dead Redemption 2 coming out and the PlayStation 4 slowly reaching the end of her life cycle. Meanwhile, a new industry started to emerge: augmented reality.
+
+Augmented reality’s forecasted market revenue will be around 80 billion US Dollars by 2021 \cite{evans2017evaluating}. Those incredible numbers have drawn the attention of many technology firms that each have by consequence developed their own products for the market. For Microsoft, its newest tool for augmented reality is the HoloLens. This technology now gets used in -for instance- training videos for assembly and manufacturing lines. For us, it will be one of our key technologies for making a mixed reality robotic game. More on that later.
+
+Augmented reality is a relatively new field of research. It involves "augmenting" a person's perception of the real world by adding computer-generated information. This way, a new world is created by "mixing" real-world elements with virtual elements.
+
+This brings us to mixed reality. It's a form of augmented reality that aims to adding virtual objects to the physical world in such a way as they look as if they were really placed within that world. This means there should be a seamless interaction between the physical and virtual elements in the environment. This is what our problem statement will be focusing on.
+
+\subsection{Methodology}
+A methodology is “a system of principles, practices, and procedures applied to a specific
+branch of knowledge.” Such a methodology helps us researchers to produce and
+present high quality design science research in that is accepted as valuable, rigorous, and
+publishable in research outlets.
+
+For this research paper, we have chosen to use the Design Science Research Methodology for information systems applied to augmented reality systems\cite{peffers2007design}\relax.
+
+\paragraph{Research activities}\mbox{}\\
+This methodology works in a number of clearly defined activities:
+\begin{enumerate}[wide=0pt]
+\item Problem identification and motivation: To start with, we should clearly	define our problem statement: what the problems are and also justify the search for a solution for it. It should be as precise as possible.
+
+\item Define the objectives for a solution: the objectives
+should be deduced rationally from the problem specification.
+
+\item Design and development: the implementation of the solutions for our designed problem. The final product should be a mixed reality robotic game. This will only be done in the second semester of this academic year.
+
+\item Demonstration: the final developed product should solve the formulated problems. We could apply it on an instance of the problem This could involving the use of a simulation, case study, proof, or other appropriate activity.
+
+\item Evaluation: observe and measure how well the artifact supports a
+solution to the problem. This activity involves comparing the objectives of a
+solution to actual observed results from use of the artifact in the demonstration.
+
+\item Communication: this involves informing other researchers about my problem and solutions this paper offers: its utility and novelty, the rigor of its design,etc.
+\end{enumerate}
+
+
+\subsection{Problem statement}
+Since augmented reality is still a relatively small industry with growing stakes, there are some issues in the field we have to account for. We'll formulate our problem statement.
+
+\subsubsection{Limited research in the field}
+Robot navigation based on the vision of head-mounted devices is something new. Therefore, there is still very limited research on the matter. The related work in the following section makes this even more apparent.
+
+\subsubsection{Robot vision with limited hardware}
+To have a mixed reality robotic game, the robot we would use has to be able to see the virtual objects the user can see. The interaction between them should be seamless. The problem here is that robots who have the appropriate sensors on them to track these computer-generated elements have unreasonable price tags. The best we can do is using a robot assembled out of Lego parts. 
+
+The robot should be able to see the game objects and interact with them based on what it sees from the head-mounted device of the user. This is for the better since it would crank down the price of the required hardware considerably.
+
+\subsubsection{Airborne navigation of virtual objects}
+The perception problem of the previous paragraph could be applied to the game's virtual objects. This is the prior problem statement but in reverse: instead of worrying about the vision that physical objects have of the virtual objects through the head-mounted device, how about the vision virtual objects have of the physical robot using the HMD vision? 
+
+The virtual objects have to hover on top of the targeted robot. For this we should write some logic about aerial navigation but that's not a real problem since writing some basic AI should do the trick. The real issue is properly communicating the robot's position. 
+
+\subsubsection{Target acquisition}
+Based on neck movement and eye gaze, how could we optimally steer the robot? We should also be able to communicate some other input like when to shoot, etc.
+
+\subsection{Research question}
+Having dealt with the problems we might bump into, the research question for the paper is as follows: can I make the controlled robot interact with the virtual elements based on the vision it gets from the head-mounted device I am using? In other words: can I navigate the robot with my head-mounted device?
+If we would find a solution for these questions, it should be as cost-efficient and reliable as possible. 
+
+\section{Related works}
+In the previous section, we've talked about our problem statements and reformulated them as research questions. The research papers gathered here focus on the fields of robotics, augmented reality, mixed reality and spatial awareness. 
+This way, we could validate or refine our problem statements. This is very important since making a brand-new paper about something that has already been researched before is redundant. This work should be useful and allow researchers to build upon it.
+
+\subsection[Mixed Reality for Robotics]{Mixed Reality for Robotics\cite{hoenig2015mixed}}
+With the ever-increasing presence and growth of robotics in industries and everyday life, it is clear that science has made some real progress in the field. Combining research in robotics with mixed reality has proven to be a great way to come to even more new findings. The central contribution of this work is to establish Mixed Reality as a tool for research in robotics.The 3 specific examples of combining those two disciplines allow us to further elaborate our problem statements.
+
+\subsubsection{Benefits}
+The reason those two unlikely fields got combined is that it brought some very neat advantages for the involved scientists. 
+
+One of these advantages is that it eliminates the distance some researchers or research groups may be apart of one another. In other words: no geographical constraints any more. This is thanks to what we call spatial flexibility. Mixed reality allows us to perform experiments with robots remotely. They can meet in a virtual environment instead of having to travel great distances to witness tests on their machines.
+
+Another advantage is the enormous safety benefits linked to using virtual environments. Human-machine interaction would be a thing of the past and interaction would happen solely with virtual models. Potential harm to human test subjects is now impossible.
+
+Mixed reality also makes for an enriched environment where all physical and virtual data interact directly in real-time; no further computation or calculation is necessary. This expedites and simplifies debugging because the difference between implementation and simulation becomes even smaller. 
+
+\subsubsection{Experiment 1}
+Using camera's mounted on unmanned aerial vehicles the research team conducted three kind of experiments with robots. It is especially the third one that is interesting here.
+The first experiment focused on making drones follow a human around. But since human motion is complex and unpredictable, and UAVs are highly dynamic systems, the typical coarse-detail simulation is not expected to be very accurate.These issues may pose safety risks for humans sharing the environment with the robots. 
+This is why they used mixed reality to simulate the movement of a human using Unity.
+
+\subsubsection{Experiment 2}
+The next experiment involved spreading a limited amount of drones on a wide area that constantly changed using mixed reality. This is interesting since we can see drones adapt on the fly on changing mixed environments. It allows for swarm algorithms to be tested in a simulation that more closely depicts the actual physical motions of a robot, prior to implementing the algorithms on their real counterparts. 
+
+\subsubsection{Experiment 3}
+Finally, a camera-equipped UAV can be used to identify and track robots using special markers (so-called augmented reality tags) and vision processing. The function of the robots is to move a box to a specific location. Based on the locations of the robots and the box, which are computed with vision processing from the drone's camera view, the robots drive toward the box to move it. 
+While this is a simple scenario, it demonstrates the capabilities of the mixed reality approach for testing vision-based approaches without having the required set of hardware.
+
+\subsubsection{Problem statement review}
+While the 3 experiments are interesting applications of mixed reality, the most interesting one would be experiment 3: the drone actually moves other robots by using its perception of the world. The camera on the drone can be easily generalized to a head-mounted device like the Microsoft HoloLens that would also use a similar technology like AR tags and image processing.
+The only challenge left would be to make the robots interact with virtual objects instead of a physical box. 
+
+\subsection[Pinpointing: Head- and Eye-Based Target Selection]{Pinpointing: Head- and Eye-Based Target Selection\cite{kyto2018pinpointing}}
+A next important aspect in our mixed reality robotic game is the concept of target acquisition neck movement and eye gaze.Head movements are deliberate and accurate, and provide the
+current state-of-the-art pointing technique. Eye gaze can potentially be faster and more ergonomic, but suffers from low accuracy due to calibration errors and drift of wearable eye-tracking sensors. This work investigates precise, multimodal selection techniques using head motion and eye gaze.
+
+\subsubsection{Problem statement review}
+Target acquisition is a big deal for the theses. Without it, the game wouldn't even exist since there's no way to shoot down the enemy aircraft. The paper displayed a lot of techniques with eye gaze and neck movement to select targets. It actually offers all the answers to our problem statement about target acquisition.
+
+\subsection[Accurate real-time occlusion for mixed reality]{Accurate real-time occlusion for mixed reality\cite{walton2017accurate}}
+
+\subsection[A real-time tracker for markerless augmented reality]{A real-time tracker for markerless augmented reality\cite{comport2003real}}
+This paper addresses the problem of implementing markerless realtime augmented reality. A form of AR where the used application doesn't need any prior knowledge of the physical environment to overlay 3D content into a scene and hold it to a fixed point in space.
+
+This is quite a novelty in augmented reality and is attributed to the recent emergence of better cameras and other sensors. These sensors were perfected so much so that they were soon able to -for instance- detect locations of walls and points of intersection without needing any foreknowledge.
+
+Like mentioned before, markerless AR can be applied on a variety of sensors, be it visual or not. This paper focuses on a monocular vision sensor or a camera to keep it simple. This is in our best interest since the MicroSoft HoloLens is a camera mounted on a user's head.
+This study will focus on the registration techniques that allow alignment of real and virtual worlds using images acquired in real-time by a moving camera. The paper compromises 4 experiments where 
+
+\subsubsection{Virtual Visual Servoing}
+The contribution of this paper is the design of a virtual visual servoing system. It strongly resembles normal servoing: a technique where a robot gets controlled and steered by using feedback information extracted from a visual sensor like a camera. But in this case, we will not be correcting a robot but virtual objects based on their current positions in the real world as seen by our head-mounted device.
+
+\subsubsection{Experiment 1: Tracking in an indoor environment}
+The first experiment involves tracking in an indoor environment. With tracking, we mean that the used visual sensor or camera keeps an eye on elements in the physical environment. Specific to this experiment, it has to track four 3D circles. Although the images are quite simple in this experiment, if no robust estimation is considered tracking fails after a few images because
+the minimization process has to deal with miss-tracking and problems due to occlusion.
+
+\subsubsection{Experiment 2: Tracking in an outdoor environment}
+A little bit trickier than previous experiment since outdoor environments provide more environment issues. The experiment had to track a cilinder and correctly place a virtual object relative to it. Despite very noisy images (wind in the trees, multiple occlusions, etc.) tracking was still achieved.
+
+\subsubsection{Experiment 3: An AR application for system maintenance}
+The experiment here recreates a guided maintenance system for an air-conditioning system. The scenario deals with heavy occlusions and the effects of video interlacing.scenario. It turns out that the realtime AR algorithm is very robust to many sources of external error. So much so that in spite of heavy occlusion and disturbances, tracking is still very reliable and handled in realtime.
+
+\subsubsection{Experiment 4: Tracking in a 3D visual servoing experiment}
+A positioning task using a couple-charged device camera has been also considered. A CCD camera  is a type of image capture device that utilizez an image sensor to register visible light as an electronic signal. The visual sensor is mounted on a robot that would start in an initial position and make his way to a desired position expressed as a desired position of the object in the image. The result of the tracking algorithm was very positive.
+
+\subsubsection{Problem statement review}
+This article was chosen to tackle the problem statement of airborne navigation for the game's virtual objects. Specifically, the theses requirement states the objects should hover on top of the robot. Using virtual visual survoing and some basic AI algorithms this should be feasible. 
+
+The article confirms that we can correct the position of the game objects by way of a moving camera perspective, in this case the Microsoft HoloLens. The head-mounted device would be using markerless augmented reality to keep track of the physical robot and the technique of virtual visual servoing would correctly place the virtual objects relative to it. 
+
+The only question remains how to combine these technologies with the navigation logic of the hovering elements. But this is more of an implementation issue.
+
+
+\section{Mixed Reality Robotic Game}
+\subsection{Overview}
+The purpose of the final bachelor theses is to realize a mixed reality robotic game. This means a new environment will be created by merging virtual elements to the physical world we can observe. A physical robot will be controlled by a user using a head-mounted device. Some virtual objects will be hovering over the robot and the user has to steer the robot using eye gaze to shoot them down. To add to the game play experience, some must-have game elements like high-scores, player upgrades or a difficulty setting will be added.
+
+\subsubsection{Head-Mounted Device}
+With the help of immersive technologies like the Microsoft HoloLens we will be able to display our virtual elements in the environment for the user to see. The user of our application will interact with the virtual elements by using a physical, remotely controlled robot built out of Lego blocks. 
+\subsubsection{Target Acquisition}
+With the help of eye gaze and neck movement, the user should be able to select a virtual object -an enemy- and instruct the robot to direct its firing on it.
+
+\subsubsection{Airborne navigation}
+Airborne navigation is a big part of the thesis: game objects will be hovering on top of
+their targets so some basic artificial intelligence will have to be programmed.
+
+\subsection{Implementation}
+The implementation of the game will be handled in the second semester of this academic year. Though not an urgent matter to consider, it's still handy to think about the technologies that will be used.
+
+\subsubsection{Programming language: C Sharp}
+C Sharp is a high-level programming language introduced by Microsoft and built as an extension of the C programming language (just like C++). It is used in essentially all their products including the Microsoft HoloLens. Easy to say that -to write an app for this device- using C Sharp is a prerequisite we have to meet. 
+
+\subsubsection{Unity as 3D Engine}
+Unity is a cross-platform game engine that can be used to implement both 2D and 3D games. It's widely used by amateur game enthusiasts and boosts an excellent IDE that makes the whole coding experience easy and enjoying. We will use its Integrated Development Environment to write our C Sharp code.
+
+\subsubsection{Microsoft HoloLens}
+The Microsoft HoloLens is one of the first commercially available head-mounted devices on the market. It's quite expensive costing around 3000 US Dollars and about 5000 for the commercial suite. There might be some difficulties using it keeping in mind it's quite a novelty on the market.
+
+\subsubsection{Mixed reality platform}
+As part of the Windows 10 operating system, Microsoft released with it Windows Mixed Reality. This is a platform that provides holographic and mixed reality experiences with compatible head-mounted displays like its flagship product the Microsoft HoloLens.
+It will be an invaluable asset for the theses since it eases the integration of our software with the HoloLens.
+
+\section{Conclusion}
+
+\subsection{Conclusion}
+\subsection{Acknowledgements}
+I would like to thank my two advisors Payam Ebrahimi and Ahmed Abdullah for the constant help and insights into writing a proper research paper. 
+
+
+\bibliography{References}
+
+\end{document}

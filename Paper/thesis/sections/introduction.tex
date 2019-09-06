@@ -1,0 +1,75 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Introduction}
+Video games and computer graphics have come a long way from their inception in the 1950s\footnote{\protect\url{https://en.wikipedia.org/wiki/Video\_game\_graphics}}. Going from simple vector graphics to fully 3D rendered games, the player's gaming experience and immersion has increased dramatically over the past decade. The next step in the search for greater immersion is to completely surround the user in the game space instead of limiting it to the screen. This can be done with Mixed Reality giving the user the impression of being physically present in another world.
+\newline
+Mixed Reality is a set of technologies that involves combining elements of the real and virtual world to create a new world where the two can interact with one another. As indicated in Migram's 1994 paper\cite{milgram1994taxonomy}, Mixed Reality can be classified somewhere in between the real and virtual environment on the reality-virtuality continuum. The two sides of the spectrum refer to an environment where everything perceived is part of the real world and an environment where everything perceived is computer-generated (virtual reality) respectively. This makes MR a pretty broad research field.
+\newpage\mbox{}\\
+In recent years, there has been a surge in public availability for Mixed Reality technologies. For Augmented Reality alone, market forecasts predict a total revenue of around 80 billion US Dollars by 2021\cite{evans2017evaluating}. Research for MR however has existed for a considerably longer time going back as far as the Virtual Fixture system developed in 1992 at the United States Air Force Research Laboratory \footnote{\protect\url{https://en.wikipedia.org/wiki/Virtual\_fixture}} 
+\newline
+The goal of our thesis is the development of a framework for navigation in an MR environment that lets virtual elements hover around certain physical objects. We will demonstrate our findings by developing an MR robotic game where one uses a Microsoft HoloLens\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft\_HoloLens}} to steer a robot around that is able to interact with the digital world. An example of this can be found in the problem identification section.
+
+\newpage
+\section{Problem Identification}
+During the Build Developers Conference\footnote{\protect\url{https://en.wikipedia.org/wiki/Build\_(developer\_conference)}} held by Microsoft in 2015, Alex Kipman demonstrated the HoloLens' cross-space capabilities involving the B15 robot \footnote{\protect\url{https://www.youtube.com/watch?v=xnrHFV34PfM}}. In the demo, we can see the user control the B15 by indicating waypoints that the robot improves with path-finding. They also managed to overlay a holographic robot on top of the physical robot that follows the real robot around based on the vision of the Microsoft HoloLens. This was done in order to make the experience more immersive.
+\begin{figure}[!htb]
+	\includegraphics[width=0.8\textwidth]{images/BuildDemoB15.png}
+	\captionsetup{width=0.8\textwidth}
+	\centering
+	\caption{Using the HoloLens and a virtual interface, the user can specify a path for the robot to follow. This image was adopted from the Youtube video in footnote. }
+\end{figure}
+\newline
+The issue here is that not all the source code of the project is freely available to the public. The whole goal of the research thesis is to develop a software application inspired by this Microsoft project and to make it freely available for researchers to use and build upon it. However, there are some problems we have to account for namely for the navigation and interaction between the virtual agents and the robot.
+
+\subsection{Navigation}
+To the best of our knowledge, there exists no publicly available framework for navigation inside a dynamic environment. There is ---however--- a master student who for his final thesis had to develop a similar MR framework with the ability for navigation at the WISE Lab\footnote{\protect\url{https://wise.vub.ac.be/}}. Unfortunately, his work is not ready for release. This is why developing such framework will be the focus of our thesis. 
+
+\subsection{Interaction between Virtual Agents and Robot}
+From the perspective of the user, there should be a seamless interaction between the robot and the virtual agents. The robot should be able to see the game objects and interact with them based on what it sees from the head-mounted device of the user. The perception problem also applies to the game's virtual objects: what vision do they have of the physical robot? 
+
+\section{Objectives}
+Having dealt with the problems of implementing a Mixed Reality application similar to Kipman's demo, our research question is thus as follows: "Can we make a framework that would display similar features to Microsoft's demo and make it available for researchers?". For solving the stated problems, we have to formulate some objectives.
+
+\paragraph{Navigation Framework}
+We will have to define a navigation framework for a dynamic Mixed Reality environment. It should allow virtual objects to track the physical robot. It will require some efficient path-finding algorithms as well as spatial mapping and tracking  algorithms. 
+
+\paragraph{System Design}
+I would like to explore the feasibility of implementing an alternative system architecture than the classic client-server model\footnote{\url{https://en.wikipedia.org/wiki/Client-server\_model}} for my framework. We could alter the configurations as to make the objects of the virtual space and the objects of the physical space equally important. Making the application peer-to-peer based as to spread the computation over multiple components could help in this objective.
+
+\newpage
+\section{Methodology}
+For this thesis, we have chosen to use the Design Science Research Methodology for information systems applied to Mixed Reality systems\cite{peffers2007design}\relax. We will clearly elaborate our activities for each step:
+
+\begin{itemize}
+	\item Problem identification and motivation: this has been done in section 1.1. 
+	%The identified problem was that a navigation framework for game objects inside an MR environment has yet to be designed. The project solution revolves developing such framework.
+	
+	\item Define the objectives for a solution: the objectives for the success of this research effort have been specified in section 1.2. The overall objective would be to develop a navigation framework for MR and explore possible architectures to do so.
+	
+	\item Design and development: the design and expected features for our solution has been established after repeated meetings and discussions. Chapter 3 gives a more high-level explanation to our solution while chapter 4 discusses the more low-level implementation details.
+	
+	\item Demonstration: we will provide a demo of our software application during the final thesis presentation.
+	
+	\item Evaluation: we will assess to which extent the developed product answered to the stated problems. The goal is to disclose the usability of the robotic game and ---as a consequence--- our framework. We will also discuss development issues that we faced. This can be found in Chapter 5.
+	
+	%\item Conclusion: this involves reflecting  
+	% notifying the scientific community about my final paper and its findings. Though not in the scope of my thesis I would like to pave the way for it.
+
+\end{itemize}
+The focus of this phase is on the problem identification and defining the objectives. We will also provide a brief overview of the technologies we plan to use in the second phase. The other steps ---like the project development--- will be covered in that second phase.
+
+\section{Thesis Outline}
+In line with our research methodology, the thesis report has following structure:
+\newline\newline 
+\textbf{Chapter 1:} The general introduction to the research paper. It covered our research field, identified the problems we might bump into, formulated our research question and our set objectives.\newline\newline
+\textbf{Chapter 2:} a discussion of the general concepts used for the project by referencing previous research papers. This related work sections helps us in specifying our thesis requirements. It is the basis for the offered solution of chapter 3.
+\newline\newline
+\textbf{Chapter 3:} we give a high-level overview of the framework for its provided functionalities and discuss the resources it provides. For one of our objectives, we wanted to explore the feasibility of going for a peer-to-peer model in our framework. This is covered in the system design section.
+\newline\newline
+\textbf{Chapter 4:} we discuss the low-level implementation details of the framework in terms of the code we developed and the package it represents. 
+\newline\newline
+\textbf{Chapter 5:} as a technical evaluation of the built framework, we developed a robotic game to show off its full functionalities. We cover what was developed with the framework and what was implemented independently for the game.
+\newline\newline
+\textbf{Chapter 6:} we evaluate our robotic game with the User Review Questionnaire. Its positive results indicate that the application is somewhat successful.  
+\newline\newline
+\textbf{Chapter 7:} a conclusion to the thesis. We recapitulate on the performed work and reflect on the difficulties encountered in the process. We specify in which ways our framework deviates from the original requirements and discuss possibilities for future work.

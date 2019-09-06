@@ -1,0 +1,18 @@
+\chapter{Appendix} \label{App:AppendixA}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\renewcommand{\figurename}{Listing}
+%\captionsetup[lstlisting]{font={small,tt}}
+
+\section{Notable Java Classes}
+\lstinputlisting[caption= Motorops class for controlling the robot's motors., 
+				language=Java, firstline=0, lastline=83]{code/MotorOps.java}
+				
+\lstinputlisting[caption= Client class for managing the communication with the server
+						  and steering the motors based on received messages., 
+						  language=Java, firstline=0, lastline=153]{code/Client.java}				
+
+
+\newpage
+\section{Notable C\# Classes}
+\lstinputlisting[caption= KeywordManager class to allow for voice commands., 
+style=sharpc, firstline=0, lastline=153]{code/KeywordManager.cs}		

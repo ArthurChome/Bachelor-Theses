@@ -1,0 +1,67 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * This class represents the TCP client 
+ * who will communicate with the server: 
+ * be it on Unity or the HoloLens.
+ * 
+ * Site of reference: 
+ * https://www.developpez.net/forums/d1608060/java/general-java/apis/io/java-client-serveur-sockets/
+ * */
+
+public class Client {
+	
+	/* Portnumber the client will be polling (listening) */
+	private static int port = 4002;
+	/* Endpoint for sending information to the server. */
+	private static Socket socket;
+	
+	/* Get the Mindstorms motor management class. */
+	static MotorOps motors = new MotorOps();
+	
+	/* Variable to indicate whether we're still trying to connect. */
+	public static boolean tryConnection = true;
+	
+	/* Number of tries/attempts to connect with the server. */
+	public static int noOfTries = 10;
+	
+	public static void main(String[] args)
+	{
+	
+		/** Notification */
+		motors.screenMessage("Client started");
+ 
+		/** Try connecting a couple of times with the server. */
+		while (tryConnection){
+			try
+			{	//Insert the public IP address of the server and the port he is listening to.
+				socket = new Socket("192.168.0.102", port);
+				// Show the server response
+				String response = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+				System.out.println("Server message: " + response);
+				
+				//Do the string matching
+				if (response.matches("360")){
+					motors.pivot180();
+					motors.pivot180();
+				}
+				else motors.screenMessage("Could not match given message.");
+
+				
+			}
+			catch(Exception e){
+				noOfTries = noOfTries - 1;
+				if (noOfTries == 0){
+					tryConnection = false;
+				}
+				//System.out.print("Could not connect.");
+				motors.screenMessage("Could not connect.");
+			}
+		}
+	}
+}

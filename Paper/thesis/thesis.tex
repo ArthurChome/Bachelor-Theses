@@ -1,0 +1,102 @@
+\documentclass[a4paper,12pt]{book}
+
+%\usepackage{amssymb}
+%\usepackage{pdfpages}
+%\usepackage{pseudocode}
+%\usepackage{blindtext}
+%\usepackage{lscape}
+%\usepackage{verbatim}
+%\usepackage{stmaryrd}
+%\usepackage{caption}
+%\usepackage{subcaption}
+%\usepackage{subfig}
+\usepackage{pdfpages}
+\usepackage{array}
+\usepackage{tabularx} 
+\usepackage{pdfpages}
+\usepackage{listings}
+%\usepackage[tox, page]{appendix}
+\usepackage[hyphens]{url}
+\usepackage[rightcaption]{sidecap}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx} %package to manage images
+\usepackage{template/cisa}
+%Specify image folder
+\graphicspath{images/ }
+
+
+
+
+
+\author{Arthur Vincent Chom\'e}
+% ba for bachelor 
+% ma1 for one year master 
+% ma2 for two years master in facutly of science 
+% macs for macs students 
+\level{ba}
+\title{A Navigation Framework for Mixed Reality}
+%\subtitle{Test Subtitle}
+\promotor{Prof. Dr. Beat Signer}                                                         
+\advisors{\mbox{Payam Ebrahimi, Ahmed K.A. Abdullah}}
+\academicyear{2018}{2019}
+\dutchspeaking{true}
+          
+\begin{document}
+
+% ---------------- THESIS CONTENT ----------------
+
+% Title Pages
+\makethetitle
+
+\setcounter{page}{1}
+ \pagenumbering{roman}
+
+
+% Abstract
+\input{sections/abstract}
+\newpage
+
+% Acknowledgements
+\input{sections/acknowledgements}
+\newpage
+
+% Table of Contents
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+ \pagenumbering{arabic}
+
+% Sections
+\input{sections/introduction}
+
+\input{sections/relatedwork} 
+
+\input{sections/navigationframework}
+
+\input{sections/navigationframeworkimplementation}
+
+\input{sections/roboticgame}
+
+\input{sections/evaluation}
+
+\input{sections/conclusion}
+
+% Appendix A
+\newpage
+\appendix
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\appendixname}\ \thechapter.\ #1}{}}
+\input{sections/appendixA}
+
+% Appendix B
+\newpage
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\appendixname}\ \thechapter.\ #1}{}}
+\input{sections/appendixB}
+
+
+% Bibliography
+\bibliographystyle{plain}
+\bibliography{bibliography} % uses the file bibliography.bib !
+ % -------------------------------------------------
+
+\end{document}

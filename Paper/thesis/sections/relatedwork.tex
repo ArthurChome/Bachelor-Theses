@@ -1,0 +1,275 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Related Work}
+Now that we identified our problems and formulated our objectives for the research topic, we will do a literature study to refine them. The found related work represents the current knowledge the scientific research community has about the field. The discussed papers focus on Mixed Reality for robotics, navigation in a Mixed Reality environment, computing architectures, target selection, occlusion in Mixed Reality and the Microsoft HoloLens.
+This broad selection will allow us to either validate or refine our research question and the objectives. Writing about something that has already been researched before would be redundant. Our research effort should be useful and allow researchers to build upon it.
+
+\section{Overview}
+Mixed Reality technologies allow us to perceive things that others cannot through an enhanced view of our surroundings. Its utilities and applications are very broad from simulating real-life tests for robots\cite{hoenig2015mixed} to pedagogical uses like educating an assembly line worker\cite{evans2017evaluating}. \newline
+An application we could more relate to, would be the popular game \mbox{Pok\'emon} ~GO\footnote{\protect\url{https://en.wikipedia.org/wiki/Pok\'emon\_Go}}. It is known for bringing augmented-reality technologies to the public, increasing its accessibility.
+The game allows players to explore the world enhanced with computer-generated Pok\'emon like Pikachu or Charizard. They can proceed to Pok\'estops that function as the game's general stores and to Pok\'egyms to battle other players. All of this gets displayed on the screen of the user's smartphone. The player can also move to wild Pok\'emon to try and catch them\footnote{\url{http://www.edubilla.com/articles/play-and-games/people-goes-crazy-behind-the-augmented-reality-game-pokemon-go/}}.\newline
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/pokemon-go-screenshots-squirtle.png}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{These screenshots show different views for the player. To access Pok\'estops   and Pok\'egyms, the player must travel the real world. His mobile screen shows his current position allowing for orientation. These pictures have been taken from Edubilla\textsuperscript{2}.} 
+\end{figure}
+
+\subsection{The Microsoft HoloLens}
+The Microsoft HoloLens is a head-mounted device that allows for the mapping of virtual agents over the physical world and it will be a key technology for our application. It has been such a success for Microsoft that it spawned a collaboration\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft\_HoloLens}} with technology firms Asus and Samsung. These two firms now develop their mixed-reality software applications around the specifications of the HoloLens.\newline
+Gabriel Evans' paper\cite{evans2017evaluating} evaluated the HoloLens on an application for educating people to use an assembly line. Users would get directions on where every piece of hardware should go to assemble a product, making for a very educative experience. \newline
+The conclusion of the paper is that the HoloLens is a more than capable device to deliver a Mixed Reality experience. The hardware capabilities of the HoloLens \dquote{allowed for virtual content to be spatially located correctly enough for assembly instructions}. The display of the head-mounted device was also more than sufficient for the very detailed user interfaces programmed for the application to improve ease of use. 
+
+\section{Robotics}
+Referencing the work of researcher Wolfgang H\"{o}nig\cite{hoenig2015mixed}, we can see that Mixed Reality has come a long way in robotics. The combination of these two disciplines has proven to be a great way to come to even more new findings. This follows out of H\"{o}nig's statement that  \dquote{the central contribution of this work is to establish Mixed Reality as a tool for research in robotics}.
+
+\subsection{Benefits}
+With Mixed Reality, we can create an environment where physical objects seamlessly interact with virtual objects. It would therefore be feasible to make physical robots interact with virtual components. This brought forth some very neat advantages for the involved scientists in the field of robotics improving their research and overall productivity.
+\newline 
+Scientists can now witness remote tests performed on their built machines by way of Mixed Reality. They no longer need to travel great distances to the testing grounds as they can follow everything through a head-mounted device. They thereby meet in one virtual environment instead of a physical one. This improves their overall presence and collaboration considerably since there are no more travel distances between collaborators. This situation is described as spatial flexibility\cite{hoenig2015mixed} and refers to a situation where \dquote{interaction between physical and virtual environments in MR allows experiments with robots to be performed remotely}. This is all made possible by the recent advancements in internet connectivity.
+\newline
+Another advantage is the enormous safety benefits linked to using virtual environments. No longer will human participants be put in potentially hazardous situations by interacting with experimental machines. These machines are still to be tested and could potentially show unexpected behaviour dangerous for the humans involved. Using humans for testing would be a thing of the past and experiments would only use virtual models.
+\newline
+MR applications have the ability to add computer-generated information to their environment that can easily be changed at will. This would make for much richer testing grounds for the experiments. \dquote{This expedites and simplifies debugging because the difference between implementation and simulation becomes even smaller}. 
+
+\subsection{Experiments}
+What follows are practical experiments extracted from H\"{o}nig's paper\cite{hoenig2015mixed}. The research team conducted three experiments using cameras mounted on Unmanned Aerial Vehicles\footnote{\protect\url{https://en.wikipedia.org/wiki/Unmanned\_aerial\_vehicle}} (UAV).These are so called "drones" and are aircraft that do not have a human pilot on board. All control of these devices happens remotely.
+
+\paragraph{UAVs Following a Human Model}
+The first experiment\cite{hoenig2015mixed} focused on making drones follow a virtual simulation of a human around. But since human movement is \dquote{complex and unpredictable}, researchers believed their whole experiment to be not \dquote{very accurate}. The whole purpose of the experiment was to use human models with MR to limit safety risks since no real humans would actively participate with the experiments. It is worth mentioning that the team used the Unity game engine\footnote{\protect\url{https://en.wikipedia.org/wiki/Unity\_(game\_engine)}} which we will use extensively in the second phase of the thesis.
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/Honig2015Exp1.png}
+	\centering
+	\caption{Above pictures show 3 views on the experiment. From left to right: abstract image of the used Mixed Environment, a view of the physical environment and the virtual environment generated by the Unity engine. With MR, the two quadcopters follow virtual objects around who simulate human movement. These 3 images have been adopted from H\"{o}nig's paper\cite{hoenig2015mixed}.}
+\end{figure}
+
+\paragraph{Spreading UAVs on a Wide Area}
+For the next experiment, the team implemented a swarm algorithm that managed the spreading of drones over a wide MR environment. In the environment, its computer-generated elements continuously changed to challenge the swarm algorithm on its robustness. This way, the team could test how a group of drones coped with an ever-changing environment. It \dquote{allows for swarm algorithms to be tested in a simulation that more closely depicts the actual physical motions of a robot}. 
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/Honig2015Exp2.png}
+	\centering
+	\caption{3 views on the experiment. From left to right: abstract image of the MR environment, the physical environment with the drones spreading out and the virtual environment representing what the drones see. The pictures have been extracted from H\"{o}nig's paper\cite{hoenig2015mixed}.}
+\end{figure}
+
+\newpage
+\paragraph{Robot-tracking UAVs}
+For the final experiment, the researchers controlled two ground-based mobile robots based on a drone's camera vision with the purpose of moving a box around in a specific direction. One of the technologies used were augmented reality tags\footnote{\protect\url{https://en.wikipedia.org/wiki/ARTag}} that calculate the UAV's camera position relative to the robot and some advanced image processing algorithms. This is quite useful for our paper since it highlights key technologies that we can use for tracking and moving our own robot using some off board camera. In this case, the drone would be the user with the HoloLens.
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/Honig2015Exp3.png}
+	\centering
+	\caption{4 views on the experiment. From left to right: abstract image of the experiment, the physical environment with the box and the two robots, the virtual environment and the virtual view of the quadcopter hovering above the robots. These pictures have been extracted from H\"{o}nig's paper\cite{hoenig2015mixed}.}
+\end{figure}
+
+\subsection{Evaluation}
+The 3 experiments are interesting applications of MR. The first experiment tackles the issue of tracking a virtual object by a physical machine. Be it a drone, be it a Lego robot. The successful tracking could be applied on our project where the robot interacts with the virtual "targets".\newline
+The second experiment focuses on ever changing environments. Making our application robust enough to handle such surroundings could improve its reliability considerably. In the context of our MR game, this is handy when there is a lot of virtual movement that could put some strain on the robot. Think about higher levels with a lot of "enemies" to shoot down.\newline
+The last experiment involves making ground-robots move a box by way of visual perceptions from a UAV camera. In our application, it must be possible for the user to move the robot to any location he wants. This is one of the key requirements for our final robotic game. Though the controlled robots have the objective to move a box in a certain direction, this can be easily generalised to user-controlled movement in any direction.
+
+\section{Navigation}
+Navigation\footnote{\protect\url{https://en.wikipedia.org/wiki/Navigation}} involves determining the position of an object in an environment and directing it to another specific position that you would like that object to be at. We will be focusing on the navigation of virtual objects and the user inside an MR environment. To do so, we will analyse what the scientific world already knows in this field and aboard a few papers that might serve our cause. We will conclude by revising our research objectives based on our findings.
+
+\subsection{Navigation for Humans}
+Navigation in MR focuses on providing appropriate information to the human users about their surroundings to more easily move across it. This way, users can keep track of the environment without the issues related to disorientation due to the added strain of computer-generated information.\newline
+We reference Cheng's paper\cite{chen2009intuitive} for further insights. The paper presents a Mixed Reality application that offers a tour of the Next Gene 20 Project\footnote{\protect\url{https://inhabitat.com/next-gene-20-project-taiwan/}\label{project}} in Taiwan. It would allow the users to explore the built projects in a more informative and immersive fashion all while correctly navigating them through it. This would be perfect for our robotic application. A possible feature we could have in our game based on these possibilities, would be of assisting the user of he ever were to lose track of the Lego robot. The system would then give feedback to the user to correctly navigate him or her back to it.
+
+\paragraph{Next Gene 20}
+The Next Gene 20 Project\textsuperscript{\ref{project}} is an International Architecture Project from a few years back. It was hosted in north-eastern Taiwan and consisted of a group of both local and foreign architects co-operating to build different houses following the landscape architecture\footnote{\protect\url{https://en.wikipedia.org/wiki/Landscape\_architecture}}  style.
+\begin{figure}[!htb]
+	\includegraphics[width=0.8\textwidth]{images/Pantheon.PNG}
+	\captionsetup{width=0.8\textwidth}
+	\centering
+	\caption{Stourhead in Wiltshire, England. It represents a typical work of landscape architecture. The image was adopted from a Wikipedia article\textsuperscript{9}.}
+\end{figure}
+Similar to the Museum of the Future\cite{hughes2004augmenting}, this project focuses on enhancing the user's experience by adding computer-generated information to the site he is visiting. All this with head-mounted devices. The whole project shows us that current MR technology is more than capable of navigating a human through an environment with added computer-generated information. \newline
+
+\paragraph{Added Technology}
+To add to the user's immersion, the paper questions if an MR interface can do something more than offering the traditional input tools like a mouse, keyboard or joystick. Even for 2008, more technologies surged that added to the user's experience.\newline
+The Mixed Reality system introduces a new hand-held device that gives the user more information about his surroundings if he were to place it on certain locations. \dquote{Tangible controllers move around on the real navigation map to create perfect connection between the navigation map and 3D virtual reality environment.} This technology makes the user's experience more informative as a whole.
+
+\subsection{Navigation for Virtual Components}
+The previous section has shown us that our current knowledge allows us to perfectly help a human navigate in a mixed environment. It even showed us that his tools for expressing himself (user input) has come a long way from the traditional mouse and keyboard devices.
+But how about navigating a non-human, non-physical object? A computer-generated object that does not exist but in the enhanced reality we try to build up?
+
+\paragraph{Tracking Physical Objects: Effective Mapping}
+To navigate a virtual object in a real-life environment, we must be able to correctly and precisely perceive the physical surroundings through our sensors. We will refer to Richard A. Newcombe's paper\cite{newcombe2011kinectfusion} that presents a new surface mapping and tracking algorithm. It would allow us to overcome one of the biggest issues for Mixed Reality\cite{kruijff2010perceptual}: the incorrect depth calculation of the environment resulting in poor mapping of virtual objects and a poor performance for the whole application. \newline 
+The featured KinectFusion method is able to do a real-time mapping of the environment using only a hand-held depth camera. Applying this method on our application with the Microsoft HoloLens would make it more robust since KinectFusion delivers a more complete mapping of its environment. Overall, this seems like a good mapping algorithm for our application. 
+
+\subsection{Path Finding Algorithms}
+So far, we focused on the perception the virtual agents and the robot must have of each other to effectively cooperate. We also discussed the navigation of the user and the virtual agents relative to the robot together with some basic environment mapping.
+\newline
+We will now go in more detail in the navigation of the robot and more precisely the path-finding algorithms it relies on. In the application, the user must specify a path it has to take that must also be improved if necessary by these algorithms. 
+\newline
+We will refer to Abiyev's 2015 paper\cite{abiyev2015improved} for further insights on the issue. In it, the researcher and his team compare a set of path-finding algorithms with different complexities and performances.
+
+\paragraph{Experiment: Robotic Soccer Game}
+The experiment in Abivey's paper\cite{abiyev2015improved} resolves around optimising a robotic soccer game\footnote{\url{https://www.youtube.com/watch?v=qNaBUs7gP\_A}} for 12 fastly moving robots in teams of 6. This is done ---like mentioned above--- by comparing a set of different algorithms while presenting an improvement of an already existing algorithm. The visual perceptions are supplied by two overhead cameras positioned 4 meters above the soccer field. Path finding is discussed within the context of a very quickly changing environment where opposing robots obstruct newly calculated paths and steal the ball from one another. 
+\newline
+Though some discussed algorithms are slower than other ones featured in the paper, they are less complex to implement and still fast enough for our application. We will be focusing on those slower algorithms. To make our robotic game applicable on even the most difficult environments, we will also discuss the improved algorithm featured by the paper.
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/roboticSoccer.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Using omni-wheel robots and some fast path-finding algorithms, a robotic soccer game gets realised. This image has been taken from a Youtube-video\textsuperscript{10} of the Robocup Robot Soccer Finale of 2013 in Eindhoven.}
+\end{figure}
+
+\paragraph{A*-algorithm}
+Th A*- algorithm discussed in the paper\cite{abiyev2015improved} is overall very popular for solving the path-finding problem.
+The algorithm works by starting at a point in the environment and tries to find a route to a specific endpoint with waypoints in between. Every waypoint has a specific distance to cover to reach it from a neighbouring waypoint. During the algorithm's execution, we maintain a tree of paths that all start from a specific begin point. At each iteration, the algorithm adds another node to it until a path to the end location has been found. Though not as efficient as other algorithms in this paper and too slow for a robotic soccer game where the environment changes a lot and quickly, it is still a great fit for our goal. Especially since it does not need any prior knowledge of the surroundings it gets applied to. This is a big selling point for our application since it has to be applicable on any surroundings. Another thing to consider is that the environment is fairly static: there should not be any fast moving entities in our environment that block up paths we created for the robot forcing us to find alternate paths.  
+
+\paragraph{RRT Smooth}
+The abbreviation "RRT" stands for "Rapidly-exploring Random Tree". It is a path-finding algorithm that works by arbitrarily generating trees that fill up our problem space. The original algorithm quickly finds paths between two locations but it is sometimes not the shortest possible path that can be found. Worse still is that the paths found can sometimes be quite long and overall quite bad.\newline
+
+\paragraph{Iterative RRT Smooth}
+The paper\cite{abiyev2015improved} therefore introduces an optimised iterative version that finds \dquote{feasible and near optimal solutions in short time and shortens the path length considerably}. It is part of the more complex algorithms featured in the paper. Since the user can move around changing the camera angle and making robot tracking more difficult, it can be useful. Especially when there is a lot of user movement.
+
+\subsection{Evaluation}
+We have covered the navigation for both the robot, the user and the virtual agents and discussed some path-finding algorithms for the robot specifically. In the process, we made some interesting findings. 
+
+\paragraph{Navigation for Humans}
+Cheng's paper\cite{chen2009intuitive} showed us that our current knowledge in MR allows us to perfectly navigate a person in a mixed environment. Navigation in our application could be used for assisting the user in finding its robot if he were to lose track of it. Note that this is only a suggestion and not a fixed objective for the second phase of the thesis.
+
+\paragraph{Navigation for Virtual Agents}
+We found an efficient mapping and tracking algorithm \cite{newcombe2011kinectfusion}  that would allow us to have a better grip of our surroundings. This would make for a better positioning of the mixed environment's virtual objects and their navigation. In turn improving the application's performance and reliability.
+
+%\paragraph{Controlling a Robot Based on a Camera Vision}
+%When researching Mixed Reality for robotics \cite{hoenig2015mixed}, we found out about an experiment involving an unmanned areal vehicle controlling two ground-based mobile robots to make them push a box. 
+%The experiment high-lighted some key tracking technologies like augmented reality tags. This should be useful for further development.
+
+\paragraph{Path Finding}
+Abiyev's paper\cite{abiyev2015improved} discussed an extreme case of path-finding with two remote overhead cameras applied on fast-moving robots playing a competitive game together. Path finding on a slow Lego robot should be easy in comparison. Another worry here would be to implement efficient methods for the user to express where the robot should move to. In other words: providing user input. 
+
+\section{User Input}
+The ability for the user to interact with our system is crucial. It has to be able to express such actions as making the robot move around to a certain location and making it interact with the environment including the virtual agents. Some advanced methods for user input need to be discussed to realise such expressiveness for the user. 
+We will be relying on Kyto's paper\cite{kyto2018pinpointing} for an overview of modern techniques of pinpointing which is the \dquote{use of multimodal pointing techniques for wearable (AR) interfaces}. These would allow users to select virtual or real objects in their environment. The paper focuses on eye gaze and head movement as primary methods for user input and also provides discussions to combine these. This revealed some performance improvements. 
+
+\subsection{Eye Gaze}
+Aside from Kyto's paper\cite{kyto2018pinpointing} for a broad overview of pinpointing techniques, we will discuss eye gaze more specifically by relying on Lupu's survey\cite{lupu2013survey} that focuses on eye tracking algorithms.\newline
+The functioning of eye gaze works by deducing the eye position and calculating the area they are pointing at and then implicitly or explicitly specifying whether you want to select that area. Explicit selection can be done with -for instance- a handheld device. Though eye gaze can be a good technique for the user to express himself within the application, it \dquote{suffers from low accuracy due to calibration errors and drifts of wearable eye-tracking sensors}\cite{kyto2018pinpointing}. It also has the problem of unwanted selection since a lot of the user's eye movement happens unconsciously. 
+
+\newpage
+\subsection{Head Movement}
+A next pinpointing technique in Kyto's paper\cite{kyto2018pinpointing} is head movement. Though more precise than eye gaze for pinpointing, it has proven to be quite tiresome to use since the whole head has to be moved instead of only the eyes. To alleviate the user's efforts, we could use it as a supporting technology for eye gaze.This would be a way to cope with the low accuracy of eye gaze improving the user input's preciseness.
+
+%\subsection{User Interface}
+%Providing eye gaze and head movement as interaction methods is a good idea but has to be supported by a strong user interface\cite{liarokapis2007augmented} to use them. The whole system can be made more user-friendly by way of augmenting the user's perception of the mixed environment with video, text or images. These elements would guide the user 
+
+\subsection{Evaluation}
+After reading Kyto's paper\cite{kyto2018pinpointing}, it became clear that both eye gaze and head movement have their advantages and disadvantages. Eye gaze for instance is ---when it comes to input speed--- overall faster than head movement but it lacks accuracy because of technological limitations and the very fast nature of eye movement.\newline 
+Head movement is more accurate but requires more effort of the user to handle since he has to move the whole head and neck area instead of just the eyes. Head movement proved therefore to be a tiresome input method. Moreover ---when it comes to user input speed--- it is slower than eye gaze.\newline 
+By combining these two techniques, we could combine the best of two worlds: the accuracy of head movement with the speed and natural feel of eye gaze. This while limiting user fatigue by too much head movement.
+
+\paragraph{Robot Control}
+The user can use both eye gaze and head movement techniques to control the robot. This would allow him to select the location in the MR environment of where the robot should move to. Any path optimisation would be handled by the path-finding algorithms that we already covered in the previous section.
+
+\paragraph{Target Selection}
+Under "target", we mean the virtual agents that track the robot. These have to be shot down using the robot. Though for a video game it would be quite precise to use a handheld device for manual input, we are obliged here to use the full functionalities of the Microsoft HoloLens. Since selecting a hovering virtual agent in an MR environment is a work of precision, head movement supported with eye gaze looks like the best option.
+
+\newpage
+\section{Occlusion}
+Occlusion in Mixed Reality means  that virtual objects that are "further" away from the user than physical objects can hide behind these "real" objects.  Occlusion allows the user to have an increased perception of virtual objects by giving him the impression that virtual objects are positioned behind real objects. This would create the illusion that they are part of the environment\cite{dubois2009engineering}. A good paper that discusses the occlusion problem would be the paper\cite{walton2017accurate} of researcher David Walton of the University College London\footnote{\url{https://en.wikipedia.org/wiki/University_College_London}}.
+
+\subsection{Previous Techniques}
+Walton's work\cite{walton2017accurate} starts by offering on overview of known methods for occlusion. This is a good starting point to explain what the presented new method does better.
+The problem with all existing methods is that they typically require some proper prior knowledge of the environment and more specifically on the physical objects on which occlusion must be applied. This must be either inserted by hand or \dquote{reconstructed using a dense mapping algorithm}. Since our application should be applicable on any environment, we must find a method that does not need any prior information about it.
+
+\subsection{Cost Volume Filtering Occlusion}
+The good news is that Walton's paper\cite{walton2017accurate} presents a new method for occlusion that does not need prior environment knowledge. It does ---however--- need a RGBD camera. Based on the colour levels it perceives and by depth estimations of the environment, improved occlusion is achieved.\newline
+It works by using \dquote{incomplete data to accurately simulate the occlusion of virtual content by real content in video see-through augmented reality scenes}. The algorithm is very efficient, so much so that it is \dquote{capable of detecting partial occlusion at a pixel, allowing it to avoid aliasing along occlusion edges}.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/occlusionIMG1.png}
+	\centering
+	\caption{The top two pictures present less than optimal results. The lower result was generated using the Cost Volume Filtering Occlusion method. The pictures were adopted from Walton's paper\cite{walton2017accurate}. }
+\end{figure}
+
+\subsection{Evaluation}
+Immersion is important in Mixed Reality: good applications in that category should make users feel they are in a totally new world\cite{mestre2006immersion}. Part of this realization is to make occlusion happen, it would make virtual objects able to ---al be it partially--- position themselves behind real objects. Virtual agents hovering next to the physical robot will sooner or later be "behind" it. The application must then make sure that occlusion happens.
+
+\section{Mapping of Virtual Agents}
+We will discuss the appropriate spatial mapping and tracking algorithms to overlay virtual objects on the physical environment. This all the while not having any knowledge about the terrain that gets mapped. This essentially means that an application having this feature can create a new mixed environment out of any environment. This is quite a novelty and is attributed to the emergence of better cameras and other sensors. It has already been discussed ---be it briefly--- in the navigation section of the paper but will now be treated in more detail. For further insights, we will be referencing Comport's paper\cite{comport2003real} that presents a new \dquote{3D model-based tracking algorithm}.
+
+\paragraph{Moving Edges Algorithm}
+This algorithm is used for tracking moving physical objects. Globally speaking, \dquote{tracking is dependent on correspondences between local features in the image and the object model. In an image stream these correspondences are given by the local tracking of features in the image}. More trivially explained, it is called the moving edge algorithm because it finds the edges of an object with some simple tracking algorithms. This way, it can identify and track a physical object around. 
+
+\paragraph{Virtual Visual Servoing}
+Normal visual servoing\footnote{\url{https://en.wikipedia.org/wiki/Visual\_servoing}} is a technique that consists of steering a robot based on the feedback it gets from a visual sensor monitoring all of its movements. This way, it can improve its current task.
+Virtual visual servoing consists of correcting virtual objects ---not robots--- based on their current positions in the real world as seen by our head-mounted device. This is important since the mapping of the virtual agents hovering around the robot must be as precise as possible for the sake of usability.
+
+\subsection{Experiments}
+The researchers demonstrate the features of their proposed tracking algorithm by way of a series of experiments\cite{comport2003real}. They all use a commercial digital camera to perceive their environment. If using such device is possible with the given algorithm, this must mean it is quite efficient for not requiring expensive hardware to operate\cite{kruijff2010perceptual}. Given that the experiment succeeded with a commercial camera, using the Microsoft HoloLens should therefore be no problem. The distances of the real-life objects are calculated relative to the camera. More specifically, it gets calculated by way of the moving edges algorithm discussed above.
+
+\paragraph{Tracking in Indoor Environments}
+The first experiment involves tracking in an indoor environment. With tracking, we mean that the used visual sensor or camera follows elements in the physical environment. The image estimation here has to be of high precision if we want the tracking algorithm to succeed. The experiment successfully tracked  four 3 dimensional circles around. 
+
+\paragraph{Tracking in Outdoor Environments}
+A little bit trickier than previous experiment since outdoor environments provide more natural factors (rain, etc.) hindering the mapping. The experiment had to track a cylinder and correctly place a virtual object relative to it. \dquote{Despite very noisy images, tracking was still achieved} making the experiment an overall success. This experiment could be applied to effectively make virtual agents hover around the physical robot.
+
+%\paragraph{System Maintenance}
+%The experiment here recreates a \dquote{guided maintenance system for an air-conditioning system}. It turns out that the realtime tracking algorithm that the paper\cite{comport2003real} presents is pretty robust even with heavy occlusion and disturbances from the environment. Tracking is still very reliable and handled in actual time.
+
+\subsection{Evaluation}
+This article was chosen to tackle the problem of mapping virtual objects on the physical environment. To do this, the virtual objects' positions towards the physical robot must continuously be corrected or checked. If not, the placements of virtual objects can be so bad that the immersive experience would be severely undermined. The principal technology used for this is virtual visual survoing with the moving edges algorithm. The article\cite{comport2003real} confirms that we can correctly position virtual game objects by way of a moving camera perspective, in this case the Microsoft HoloLens.
+
+\section{System Design}
+There are different system architectures that we could consider for our prototype. Kipman's demo was for instance client-server based but it could be interesting to research for some alternatives. Especially since it could offer some advantages for future development. Hence, we will explore our options.
+
+\subsection{Client-Server Based Application}
+The most trivial choice would be a client-server architecture\footnote{\url{https://www.webopedia.com/TERM/C/client\_server\_architecture.html}}. It organises a system in such a way that part of its components provide computations for other components that request them. The former are called servers and the latter clients. \newline
+This architecture can easily be applied to our prototype MR game. Yet, we will not be using a remote server\cite{funkhouser1995ring} for this but instead use the Microsoft HoloLens to host the application's server. This allows our prototype to work more independently and it eases testing. We also have a Mindstorm\footnote{\url{https://www.lego.com/en-us/mindstorms}} robot that can also do some computation all be it to a lesser extent. 
+
+\newpage
+\subsection{Peer-To-Peer Based Application}
+The problem of client-server based applications is that having some system components do all the computations can create quite a performance bottleneck. Especially by adding too many clients that could overwork the servers. Luckily, we can divert part of the workload to other components like our Mindstorm robot if need be. It is also important to consider that the application may have more components than originally envisioned in future development. 
+\newline
+All these problems ---namely scalability and the server-client dependency--- could be alleviated by using a peer-to-peer architecture\footnote{\url{https://www.techopedia.com/definition/454/peer-to-peer-architecture-p2p-architecture}}. In it, all system components would be of equal importance and all provide and request computation. Having no real dependency between the nodes could prevent a lot of system crashes since no component would be critical for the system to work.
+
+\paragraph{Shared Environment}
+A way in which we could expand the system ---both in features and components--- would be to implement a shared Mixed Reality environment that would allow multiple users to interact with each other. Note that we are considering this feature. Like mentioned above, for the sake of scalability and crash-prevention, using a peer-to-peer architecture seems like a good option. It would potentially allow an unlimited number of participants to the system.
+
+\paragraph{Solaris System}
+Keller's paper\cite{keller2002toward} presents the Solaris system\footnote{\url{https://en.wikipedia.org/wiki/Solipsis}} that uses a peer-to-peer architecture to create a shared virtual environment. In it, every system component would provide and request computation which solves the performance bottleneck of having centralised servers do all the work by spreading it over all system participants. Solaris is also highly-dynamic adapting very quickly on system occurrences like ever-changing connections between nodes or users dropping in and out as they like.
+ \newpage
+\paragraph{User Interaction}
+A neat feature of the Solaris protocol\cite{keller2002toward} would be that it allows nodes to communicate their presence to neighbouring nodes as far as their hardware allows it. This means mobile computers like smartphones are still able to contribute to the peer-to-peer network, even if their computation abilities are pretty limited. This only lowers their radius of communication with the adjacent nodes. 
+\newline
+Having a radius on which other closely positioned nodes can be in, it calculates which nodes are close enough to interact with. When two nodes are both within communication range, the system makes sure the nodes can interact with each other. It should be noted that if a node's computation capacity is very low, it might not be able to communicate with all nodes that are close enough to it.
+
+\subsection{Evaluation}
+We considered both the client-server and peer-to-peer architecture for our application. Having an alternate system architecture or even designing our framework as to be able to use both, could significantly extend its usability.
+\newline
+Though the Solaris protocol is mostly applied to Virtual Reality, we could extend its usage to a Mixed environment. In it, the avatars' position would be the physical position of the users with each carrying a head-mounted device. They would all perform and request computation to make sure they can interact with one another and with the virtual elements in the environment. Again, this is only an exploration of what our application could offer.
+
+\section{Requirements}
+Using the gathered concepts and techniques from previous research work, we would like to formulate the requirements for a framework that would allow navigation of virtual objects inside a dynamic Mixed Reality environment. The framework would then be used to develop a new prototype application. 
+
+\subsection{Tools}
+To allow for Mixed Reality, we need a device capable of enriching the user's visual perception of the environment with additional computer-generated information. In this regard we have the Microsoft HoloLens\footnote{\url{https://en.wikipedia.org/wiki/Microsoft_HoloLens}} at our disposal. For development and debugging, we're using our own laptop.
+\newline
+We require a remotely controllable robot as an anchor point to place virtual objects in the environment. It must also have mobile capabilities since our navigation framework must also be able to correctly map game objects even when the environment changes dynamically. For this purpose, we have the Lego Mindstorms\footnote{\url{https://en.wikipedia.org/wiki/Lego_Mindstorms}} robot.
+\newline
+To allow communication between these 3 devices 
+\newline
+As for the software, we require different IDE's. We need the Unity editor to implement the server, Eclipse for developing the Java client and Microsoft Visual Studio for the deployment of the project on the HoloLens. We also discovered a number of toolkits to help us in the development process such as Microsoft's HoloToolkit\footnote{\url{https://github.com/Microsoft/MixedRealityToolkit-Unity}} and the Vuforia\footnote{\url{https://developer.vuforia.com/}} toolkit.
+
+\subsection{Functional Requirements}
+Based on these tools, we are able to develop a Mixed Reality application. We still need a list of basic functionalities that the software program should abide to.
+
+\paragraph{Robot Navigation}
+The previously mentioned robot should be programmed to move in different directions based on the user's indications. This is necessary as to show that the framework can track a moving real-life object around and correctly place game objects on top of it.
+
+\paragraph{User Input}
+The user must be able to direct the target robot in a certain direction. This can be realised in different ways. Voice commands ---for instance--- would require identifying certain keywords spoken by the user that would trigger the server into sending instructions in which way the robot should move. More complicated input methods would be specifying waypoints using eye gaze that the robot should follow using a path-finding algorithm. Depending on how the project development goes, different input methods will be developed.
+
+\paragraph{Object Tracking  \& Mapping}
+A target object has to be overlayed with virtual objects. For this to be possible, it must be formally identified in the environment and tracked efficiently. Game objects must still hover on top of the robot by following it in its new course. 
+
+\paragraph{Spatial Awareness}
+This feature along with finding a path for the robot to follow and mapping virtual objects requires some advanced spatial awareness. For this to be possible it would require extensive geometry of the environment to allow for virtual objects to interact seemingly with the real-life world. 
+
+
+
+
+
+

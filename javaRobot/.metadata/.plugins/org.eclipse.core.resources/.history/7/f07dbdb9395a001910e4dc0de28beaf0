@@ -1,0 +1,96 @@
+import java.io.BufferedReader;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * This class represents the TCP client 
+ * who will communicate with the server: 
+ * be it on Unity or the HoloLens.
+ * 
+ * Site of reference: 
+ * https://www.developpez.net/forums/d1608060/java/general-java/apis/io/java-client-serveur-sockets/
+ * */
+
+public class Client {
+	
+	/* Portnumber the client will be polling (listening) */
+	private static int port = 4002;
+	/* Endpoint for sending information to the server. */
+	private static Socket socket;
+	
+	/* Get the Mindstorms motor management class. */
+	static MotorOps motors = new MotorOps();
+	
+	static Timer timer = new Timer();
+	
+	/* Variable to indicate whether we're still trying to connect. */
+	public static boolean tryConnection = true;
+	public static boolean connectNotificationSend = false;
+	
+	/* Number of tries/attempts to connect with the server. */
+	public static int noOfTries = 10;
+	
+	/** Deathclock: will stop the client program after given number of seconds. */
+	public static void deathClock(int seconds){
+		
+		timer.schedule(new TimerTask() {
+			  public void run() {
+				  System.exit(0);
+				  }
+			}, seconds*1000);
+	}
+	
+	
+	
+	
+	
+	public static void main(String[] args)
+	{
+	
+		/** Notification that the client was started */
+		motors.screenMessage("Client started. ");	
+		
+		/** Set a death clock for the client: he will die in 20 seconds. */
+		deathClock(20);
+ 
+		/** Try connecting a couple of times with the server. */
+		while (tryConnection){
+			try
+			{	/** Insert the public IP address of the server and the port he is listening to. */
+				socket = new Socket("192.168.0.102", port);
+				
+				/** Send a notification that the socket is connected. */
+				if (socket.isConnected() && !connectNotificationSend){
+					motors.screenMessage("Client connected. ");
+					connectNotificationSend = true;
+				}
+				
+				/** Show the server response */
+				String response = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+				System.out.println("Server message: " + response);
+				
+				//Do the string matching
+				if (response.matches("360")){
+					motors.pivot180();
+					motors.pivot180();
+				}
+				else motors.screenMessage("Could not match given message.");
+
+				
+			}
+			catch(Exception e){
+				noOfTries = noOfTries - 1;
+				if (noOfTries == 0){
+					tryConnection = false;
+				}
+				//System.out.print("Could not connect.");
+				motors.screenMessage("Could not connect.");
+			}
+		}
+	}
+}

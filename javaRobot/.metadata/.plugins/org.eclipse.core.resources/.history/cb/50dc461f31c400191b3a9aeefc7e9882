@@ -1,0 +1,30 @@
+import lejos.hardware.BrickFinder;
+/** To access the Ev3 Block's screen. */
+import lejos.hardware.lcd.GraphicsLCD;
+import lejos.utility.Delay;
+import lejos.hardware.Device;
+import lejos.hardware.motor.BaseRegulatedMotor;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
+
+
+/**
+ * This class activates the program with its main function.
+ * */
+
+public class MainApp {
+	
+	/** Create an instance of the BasicMotorOps-class */
+	static MotorOps motors = new MotorOps();
+	
+	/** Create an instance of a client. */
+	static Client myClient = new Client();
+	
+
+	public static void main(String[] args) {
+		myClient.main(null);
+		//motors.screenMessage("yeet");
+		//motors.goForward(5);
+	}
+
+}

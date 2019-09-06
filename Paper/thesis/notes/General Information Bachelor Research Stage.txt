@@ -1,0 +1,42 @@
+GENERAL INFORMATION BACHELOR RESEARCH STAGE
+-Research papers based on given links.
+-More or less 15 papers
+-Describe in short what each paper is about
+-Own opinion: not too detailed
+-Describe pros and cons of every paper
+
+TIPS AUDREY:
+-Google scholar: give title in, maybe get results (mixed virtual reality)
+-References: DBLP
+TIPS BEAT:
+-See who's referring to who
+-No deadline yet 
+-1st report in January
+
+TIPS AHMED:
+-Tutorials that Ahmed put aren't relevant for the theses.
+-Complete the survival shooter: but don't rush
+Prefab: 3D model that is generated: very complicated => Idea: use existing models again
+-No specific links for suject available yet; just wait.
+-Just use the paper from Ahmed: make selection based on titles (keywords: mixed, augmented, reality)
+			=> Read the intro or abstract to understand if it's related: if not, skip.
+-ACM: Digital Library (not everything on it)
+
+TIPS PAYAM:
+-Research papers MUST be of high quality.
+-Your first goal is to find if the work you do exists or not.
+-Prove to me: real problem + nobody solved it.
+-Robot navigation based on VR headset is something new.
+-Formulate a problem statement: can you make an open project for researchers
+ to easily build this.
+ => Close source: source is not open: you have to pay,... Can't have source code,...
+ => Open source: you get everything: source code,... To help people started.
+-What if it's open source? 
+TILL MONDAY NIGHT: five papers about how they incorporated hololens
+-FIND AS MANY PAPERS ABOUT:
+ => augmented reality & spatial awareness.
+ => Augmented reality & robotics.
+-Look online for industry solutions for both two topics.
+-IMPORTANT: make it look as scientific and clear as possible.
+Payam: netID, student number, emailadres & copy student card      
+  

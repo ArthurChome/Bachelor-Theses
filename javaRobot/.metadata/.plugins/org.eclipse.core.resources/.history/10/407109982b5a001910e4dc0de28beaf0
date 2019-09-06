@@ -1,0 +1,107 @@
+import lejos.hardware.BrickFinder;
+/** To access the Ev3 Block's screen. */
+import lejos.hardware.lcd.GraphicsLCD;
+import lejos.utility.Delay;
+import lejos.robotics.RegulatedMotor;
+import lejos.hardware.Device;
+import lejos.hardware.motor.BaseRegulatedMotor;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
+
+/** 
+ * This class provides us with all the operations for the motors.
+ * This includes: advancing, going back, changing speed.
+ * 
+ * */
+
+
+public class MotorOps {
+	
+	static GraphicsLCD g = BrickFinder.getDefault().getGraphicsLCD();
+	/** Concreticize the motors A, B, C and D.
+	 * We built a Lego robot with two claws and 2 tires on its feet.
+	 * In our setup, following ports have following motors:
+	 * 	A. Right-arm
+	 * 	B. Left-tire
+	 * 	C. Right-tire
+	 * 	D. Left-arm
+	 *  
+	 *  */
+	
+	/** Fetch the motors */
+	static BaseRegulatedMotor motorA = new EV3LargeRegulatedMotor(MotorPort.A);
+	static BaseRegulatedMotor motorB = new EV3LargeRegulatedMotor(MotorPort.B);
+	static BaseRegulatedMotor motorC = new EV3LargeRegulatedMotor(MotorPort.C);
+	static BaseRegulatedMotor motorD = new EV3LargeRegulatedMotor(MotorPort.D);
+	
+	/** Draw a message on the EV3 brick's screen. 
+	 * It can be used as a debugger */
+	public void screenMessage(String msg){
+		g.drawString(msg, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+	}
+	
+	/** Move forward
+	 * 
+	 *  */
+	public static void goForward(int seconds){
+		/** Synchronise the two tires as to make it go forward. 
+		 *  Just order them both to go forward. */
+		motorB.forward();
+		motorC.forward();
+		/** Delay the function call the number of given seconds. */
+		Delay.msDelay(seconds * 1000);
+		motorB.stop();
+		motorC.stop();
+	}
+
+	/** Move forward */
+	public static void goBackward(int seconds){
+		/** Synchronise the two tires as to make it go backward. 
+		 *  Just order them both to go forward. */
+		motorB.backward();
+		motorC.backward();
+		/** Delay the function call the number of given seconds. */
+		Delay.msDelay(seconds * 1000);
+		motorB.stop();
+		motorC.stop();
+	}
+	
+	/** Turn left */
+	public static void turnLeft(){
+		/** By only activating the right tire, the robot pivots to the left. */
+		motorC.forward();
+		Delay.msDelay(2900);
+		motorC.stop();
+	}
+	
+	/** Turn right */
+	public static void turnRight(){
+		/** By only activating the left tire, the robot pivots to the left. */
+		motorB.forward();
+		Delay.msDelay(2900);
+		motorB.stop();
+	}
+	
+	/** Pivot 180 degrees */
+	public static void pivot180(){
+		motorC.forward();
+		Delay.msDelay(6000);
+	}	
+	
+	public static void somePath(){
+		motorB.forward();
+		motorC.forward();
+		Delay.msDelay(3000);
+		motorB.stop();
+		motorC.stop();
+		motorB.forward();
+		Delay.msDelay(2900);
+		motorB.stop();	
+	}
+	
+	public static void main(String[] args) {
+
+	}
+	
+
+}

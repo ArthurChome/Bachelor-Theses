@@ -1,0 +1,226 @@
+% !TEX root = ../thesis.tex
+\lstdefinestyle{sharpc}{language=[Sharp]C}
+
+\chapter{Framework Implementation}
+This chapter discusses the implementation of our navigation framework. Used toolkits are mentioned here briefly but not discussed in detail since we did not implement these ourselves. Hence our focus lies on the server and the keyword manager code. Our subsequent Mixed Reality game ---that serves as the framework's technical evaluation--- has a client application developed independently and is not part of the framework. It will be covered in the following chapter.
+
+%will end on the client which is the only part of the application not developed using the framework.
+
+%\section{Overview}
+%Developing an application with the help of our framework was necessary to show its capabilities of navigating virtual objects inside a dynamically changing environment. We now discuss all used hardware in the development process as well as all mayor components of our implementation.
+
+%\section{Hardware}
+%Developing our framework happened on our desktop computer with Unity (version 2018.3.14f1) being installed. The framework had to work on both a normal computer and the HoloLens which required some additional testing effort.
+
+%\subsection{Programming Languages}
+%Since the EV3 brick only provided a drag-and-drop interface for coding, this prompted us to replace the robot's firmware as to allow for more intensive coding. This resulted in a client written with the Java programming language\footnote{\url{https://www.oracle.com/java/}}. Our server program was written with different versions of the  C\# language depending on whether it was hosted on a desktop computer or the HoloLens respectively. This required developing a program compatible for both host devices which proved at times difficult.
+
+%\subsection{Toolkits}
+%Unity\footnote{\protect\url{https://en.wikipedia.org/wiki/Unity_(game_engine)\#cite_note-Easier-4}} is a cross-platform game engine that can be used to implement ---among others--- Augmented Reality and Virtual Reality games. As of 2018 it has been extended to over 25 platforms\textsuperscript{3}.
+%Its popularity has prompted the surge of different toolkits for Augmented Reality providing functionalities to ease the development of new software.
+%\newline
+%For this project, we will be using the Vuforia\textsuperscript{6} toolkit for the detection of specific target objects in an environment and the tracking of these objects. This would also allow us to overlay them with virtual information. Another important toolkit used is the Mixed Reality Toolkit provided by Microsoft in an effort to boost the development of applications on their HoloLens product for Mixed Reality.
+
+%\section{Navigation Framework}
+%Allowing the proper navigation of game objects within a Mixed Reality environment was the main focus of the thesis. Our built framework can be seen as a package with a collection of resources that programmers can use to build derived applications. In the context of Unity, these resources take the form of game objects with scripts attached to them. They need to be added to the new application's game scene as to activate their functionalities.
+
+\section{Toolkits}
+During the development of our framework, we made use of a couple of development toolkits. Provided software tools aided us greatly in building our final prototype application. We used Vuforia\footnote{\protect\url{https://engine.vuforia.com/engine}} for the detection of specific target objects in an environment and the tracking of these objects. It would also allow overlaying them with virtual information with virtual assets being included in the package. Another important toolkit used is the Mixed Reality Toolkit provided by Microsoft in an effort to boost the development of applications on their HoloLens product for Mixed Reality. It provided us with building blocks to activate spatial awareness.
+
+\section{Keyword Manager}
+When the framework is being used to develop a Mixed Reality application involving a head-mounted device, we do not have a keyboard for user input. Hence for the HoloLens, we rely on voice commands provided by the KeywordManager.cs script. The base class we implemented uses an external programming interface for keyword recognition and its keywords can be set without altering the code.
+
+\subsection{Windows Speech Recognition}
+We did not implement the voice recognizer engine ourselves and relied on one provided by Microsoft. Unity supports a programming interface for a lot of Windows functionalities such as keyword recognition and it allows us to develop Unity applications to be hosted on Windows devices. It provides an interface to activate the microphone functionalities of the host device to listen for voice input. The code snippet we wrote sets up the recognizer as well as the keywords to listen for and their methods to call. 
+
+%for voice input by accessing the microphone functionalities of the Microsoft HoloLens. It allows us to activate the microphone functionalities of the HoloLens as to allow listening and recognizing certain keywords. Microphone capability must be declared for an app to leverage Voice input. It listens to speech input and attempts to match spoken phrases to a list of registered keywords. 
+
+%\subsection{Windows Speech Recognition}
+%Unity engine added widows speech recognition API (UnityEngine.Windows.Speech) for recognizing voice inputs. These APIs are supported for all types of windows platform (Windows editor, Windows standalone and Windows Store) but only with windows 10 operating system. 
+
+\subsection{Keyword Configuration}
+Our keyword manager code snippet is implemented in such a way to allow the user to set the recognizable keywords himself in the Unity inspector window and their methods to call when detected. This is simpler than hard-coding the keywords since it makes future configuration much harder. We used a publicly available, composite datatype called a Struct\footnote{\protect\url{https://en.wikipedia.org/wiki/Struct\_(C\_programming\_language)}} to group every keyword and subsequent method together. No longer are they treated as two variables but instead forming one element being configurable with the Inspector panel. 
+
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/KeywordManagerCode_Inspector.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{left image represents the Keyword Manager code, right image the Inspector panel for keyword configuration.
+	}
+\end{figure}
+
+\newpage
+
+\subsection{Dictionary}
+The publicly available structure allows for easy configuration in the Inspector panel. When detecting a keyword with Windows' recognizer however, its associated method has to be searched up fast to be called. To allow for fast look-up of associated methods, we made use of a Dictionary data structure. When starting the script, all Struct elements are added to a dictionary ordered on keywords with the methods as their values. This allows efficient method invocation when detecting spoken keywords. We also implemented a function to call on the event that a voice command got detected searching it up in the Dictionary. If an associated method was found for the spoken word, it invokes that method. The code for the manager can be found in Appendix A.
+
+\lstinputlisting[style=sharpc, firstline=29, lastline=44]{code/KeywordManager.cs}
+\captionof{lstlisting}{At initialisation, all keywords and methods are put in a dictionary with the recognizer being set up.}	
+
+
+%\paragraph{Deployment Issues}
+%Unfortunately ---as was specified in previous chapter--- our prototype application had some difficulties to deploy on the HoloLens with the Vuforia\textsuperscript{5} engine. This is why object tracking and game object navigation could only be realised on our Unity editor running on a desktop computer.
+
+%\paragraph{Object Scan}
+%For the Vuforia engine to be able to track the real-life robot, we had to provide it with a three-dimensional scan. Scanning the robot was done using the Vuforia Object Scanner app\footnote{\protect\url{https://developer.vuforia.com/downloads/tool}} for Android\footnote{\protect\url{https://www.android.com/intl/fr_fr/}}. It gives us real-time visual feedback on the scan progress and allows us to assess the scan quality for given target. Our target scan can be exported as an Object Data file which includes required data to define the target for recognition and tracking purposes.
+
+
+%\paragraph{Target Database}
+%Vuforia us to track targets of different shapes such as simple two-dimensional images, cubical or cylindrical objects and even three-dimensional object scans. 
+
+%The Vuforia Object Scanner allows you to create a target by scanning an object with an Android device. Simply install the app, place an object on the Vuforia scanning target, and start the scan. The app gives you real-time visual feedback on the scan progress and target quality and establishes a coordinate system so that you can build immersive experiences with precisely aligned digital content. The test mode allows you to evaluate the recognition and tracking quality within the app before you start any development. Complete instructions can be found in 
+
+%sometimes across multiple sensory modalities, including The most important feature for As to allow tracking of objects in a dynamically changing environment, Vuforia provided much needed toolkits for this end. For the development of our framework, we made use of the It uses computer vision technology to recognize and track planar images (Image Targets) and simple 3D objects, such as boxes, in real time. 
+
+%\subsection{HoloToolkit}
+%Microsoft\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft}} created its own bundle of software development tools to help in the creation of MR applications for Unity to be deployed on their HoloLens\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft_HoloLens}} product. These building blocks would provide help for implementing user input such as voice commands and to allow for spatial awareness. Also provided were diagnostic tools handy for debugging. Since there were different versions for given toolkit with varying functionalities and compatibilities, integrating it on our used version of Unity (2018.3.14f1) proved troublesome at first.
+
+%\subsection{Framework Assets}
+%Navigating objects inside a Mixed Reality environment happens by way of the assets the framework possesses. Developing new application using it requires the Unity game engine and by adding them to the application scene, their functionality can be activated.
+
+
+%\subsection{Server}
+%This component is the central part for our prototype application. It receives indications by the voice manager of which keywords the user spoke out and sends the appropriate data packets to the clients based on these spoken commands. It has a three-dimensional text mesh in the scene that gets changed based on occurred events: starting the server, voice commands to go forward or backward, etc. This way, both user and developer get notified of what's happening on the server side. Further discussion of this component is provided in the next section.
+
+%\subsection{Voice Input Manager}
+%To allow for user input with voice commands, the scene includes the Voice Input Manager object. It contains the Keyword Manager C\# script provided by one of Microsoft's HoloLens sample projects\footnote{\protect\url{https://github.com/kaorun55/HoloLens-Samples}}. It is configured as to send instructions to the subscribed clients on certain keywords.
+
+%\paragraph{Keyword Manager}
+%We did not implement our own voice recognizer engine but used one provided by Unity. It listens to speech input and attempts to match spoken phrases to a list of registered keywords. Our keyword manager class code is implemented in such a way to allow the user to set the recognizable keywords himself in the Unity settings. This is much simpler than to hardcode it in the code self. He can also set which methods from which game objects should be called when recognizing a keyword.
+%\newline
+%We implemented a public structure in the code where every element contains a keyword and a function to be called. At initialisation, all structure elements are added to a dictionary using as keys the keywords of each elements. The associated value are the methods that should We also instantiate a keyword recognizer and give as arguments the keywords it should be listening to. We bind to it a function that ---for when a word is spoken out--- tries to match it with one of our keywords. If a match does occur, it invokes the method that was associated with the matching keyword. The code for the manager can be found in the Appendix.
+
+%\subsection{Vuforia Augmented Reality Camera}
+%Every scene with object tracking enabled contains an object with Vuforia's camera for Augmented Reality. We also use it to configure our tracking engine and to import 3D scans of small objects ---such as our robot--- that has to be found in the environment. 
+
+%\paragraph{Target}
+%Another important object in any scene related to the Augmented Reality camera is the target object. It contains the three-dimensional scan of a real-life object that we would like to track in the environment as well as the virtual object that should be mapped to it. The scan was added as a package from Vuforia's developer portal and allows the real-life object to be found in the environment. 
+
+%\subsection{Holograms}
+%The Vuforia engine needed some virtual resources to map on the target that had to be found in the environment. This is why we offer a small bee virtual object as a resource. For user friendliness, we provide two user manual meshes that also appear in the package's scenes. One is for when the desktop computer is being used while the other is for the HoloLens. They explain how to use the default controls on their respective host devices.
+%Using other virtual objects is possible by designing a mesh yourself or browsing Unity's asset store.
+
+%\subsection{Scenes}
+%In the Unity game engine it is possible to split the development of a game in multiple pieces called scenes. They can be seen as game 'levels' with every scene containing a variety of objects linked with script that give it specific functionalities peculiar to given scene. Because of deployment issues on the HoloLens device, we had to develop two different scenes with one having Vuforia's object tracking features removed. This way it could still be deployed on the HoloLens.
+
+%\paragraph{Sample Scene}
+%The package contains a 'scene' folder in which you can find all scenes for the framework. A Unity scene contains the environments for your game with decorations, obstacles and other components included. It allows you to design you application in pieces contained in these scenes. We mentioned in previous chapter that the Vuforia engine could not deploy on the HoloLens properly, this is why we made a 'demo scene' where all object tracking is disabled and a 'sample scene' with all framework functionalities enabled. We will discuss the latter here with all of its components. 
+
+%\paragraph{Unity Main Camera}
+%A default Unity scene has a main camera that represents what the user will see when running the application. To still be able to activate play mode on our Unity editor, the default camera had to be included in the scene. 
+
+%\paragraph{Demo Scene}
+%To realise our demonstration video with the immersive device, we had to make a scene that deployed correctly on the HoloLens. The current scene has no object tracking or game object navigation but still allows for user input, spatial awareness from the Holotoolkit and has a server component to manage clients.
+%\subsection{Unity Configuration}
+%Using given toolkits required some additional configuration of Unity. The HoloToolkit had to be fetched from Github\footnote{\protect\url{https://github.com/}}, placed into the project's assets folder and to which Unity automatically started importing its assets to the project. These assets range from sample scenes, the scripts to prefabs. We then had to configure the toolkit to our Unity game scene and enable the support for Augmented Reality.
+%\newline
+%The Vuforia toolkit just had to be imported using the Unity installer for the Unity version that was used for the project. It was required to enable Vuforia support and add an Augmented Reality camera to the scene as to include the Vuforia engine. To activate it, one had to get a free developer key and load up a target scan for the real-life object that had to be identified.
+\section{Server}
+All the server functionality of the framework originates from the server script mentioned in previous section. It can be activated by being added to an empty object in a new scene. The code can be hosted on both the Unity editor for debugging and the HoloLens for production purposes. Its role would be to listen for incoming requests trying to connect to it, start a new thread (or task) for the new request and then forward instructions to the appropriate connected client. These instructions would be given by voice command when using the HoloLens and by way of the desktop keyboard when using the Unity editor.
+
+\subsection{Implementation Challenges}
+Programming a server that would work on both devices proved difficult because of library incompatibilities. All Microsoft products since 2016 compile their code using the Universal Windows Platform\footnote{\protect\url{https://en.wikipedia.org/wiki/Universal\_Windows\_Platform\#Compatibility}} developed as part of the Windows 10 operating system. Its main goal was to allow the development of universal apps that would run on all Microsoft products such as the Xbox One and HoloLens without the need to be re-written for each product. They each use different libraries of the C\# programming language resulting in mutually exclusive code sections. Depending on whether we're using the Unity editor or the Microsoft HoloLens, only one of these sections would be used. Implementation details of our server code are discussed further below.
+
+\subsection{Server Code}
+For our framework package, we wrote code snippets ---referred to as scripts--- that can be attached to game objects in scenes to make them display certain behaviour. ServerTcp.cs contains the code for our application server which had to be compatible on both the Unity editor and HoloLens. It uses a private network based on the Transmission Control Protocol\footnote{\protect\url{https://en.wikipedia.org/wiki/Transmission\_Control\_Protocol}} to reliably send data packets to its connected client applications running on different host machines.
+
+%\paragraph{Universal Windows Platform vs Unity}
+%The server had to be hosted on both a desktop computer and the HoloLens. This script was particularly difficult to implement because it had to be compatible with both the Unity editor and the Universal Windows Platform. The former is used by the desktop computer for debugging and the latter by the HoloLens device for deployment purposes. The host devices use these different platforms with different libraries with different application programming interfaces. This required significant code rewriting and preprocessor directives to split the code.
+
+\paragraph{Preprocessor Directives}
+Because of Microsoft's Universal Windows Platform, we had to write two  mutually exclusive code sections in the same server file. Depending on the host device, one section would be used for the HoloLens and one for the Unity editor. An issue is that the compiler is unable to tell both codes apart from each other and ---to resolve this--- we  were required to use preprocessor directives. 
+They are a language construct that tell the compiler how to preprocess the source code before actual compilation starts. In this case, we are telling it which code to ignore when using the computer and the HoloLens respectively. Separation of the HoloLens and editor code becomes explicit. 
+
+\lstinputlisting[style=sharpc, firstline=22, lastline=34]{code/ServerTcp.cs}
+\captionof{lstlisting}{With the preprocessor directive \#if UNITY\_EDITOR, we say all code is destined for the Unity editor on the desktop computer.}	
+
+
+\paragraph{Multithreading}
+The server listens on one of the ports of its host device for client requests. As to allow multiple clients to use the server, the use of threads was necessary. At the time of writing however, the Universal Windows Platform used by the HoloLens does not support threads instead only allowing us to use tasks. In the two code snippets separated by preprocessor directives, one is using threads and the other tasks.
+%as to give indications to the compiler which code to ignore when using the Unity editor and the HoloLens respectively.
+%\newline
+%\paragraph{Threads vs Tasks}
+To clarify, threads can be seen as workers to be used to fulfil some amount of work while tasks are just promises to complete a certain amount of work in the future eventually. When it comes to coding, the difference lies in their respective programming interfaces.
+
+\subsection{Desktop Input}
+Our server can be hosted on different devices with different methods for user input. If we were to use the Unity editor, we would make use of the host computer's keyboard. The buttons to press and the data bytes they send through the network are hard-coded. Using the arrows buttons, the user can make the server send movement instructions to all or specific host devices who are connected to it. If nothing gets pressed, only the stop instruction ---character N--- would be sent out.
+
+\paragraph{ReadKeyBoardInput}
+Some keyboard buttons trigger some actions within our application. We implemented a function that gets called continuously to see if certain buttons were pressed by the user. It is a collection of conditional statements with each getting executed if the required button was pressed. 
+%\newline
+Scripts in Unity are all derived from the MonoBehaviour base class. It contains a small set of default functions such as Update and Start with the first being called at every frame in the game and the second when enabling the script. To read the keyboard input, it is necessary to check at every frame whether some keys were pressed. Our ReadKeyBoardInput is placed within that Update function as to be called frequently enough to be responsive for the whole system.
+
+\lstinputlisting[style=sharpc, firstline=266, lastline=287]{code/ServerTcp.cs}
+\captionof{lstlisting}{Partial implementation of the readKeyBoardInput function: it is called on every frame and scans the keyboard on pressed buttons.}			
+
+\subsection{HoloLens Input}
+Being a pair of wearable computer glasses that enables Mixed Reality, the HoloLens does not have a tangible interface ---such as a keyboard--- to work with. The user can therefore use voice commands by enabling the host device's microphone functionality. It should be noted that waypoint selection and path-finding was initially opted as methods for moving the robot but that it could not be realised due to deployment issues. Further discussion on this in the conclusion chapter.
+
+\paragraph{Keyword Manager}
+The code for the voice manager is in another script from the server code and has been covered in previous section. Activation requires adding it to the application's Unity scene, configuring its keywords and the methods to call happens with the Unity inspector. When recognizing certain keywords, the manager calls the server's public functions that send certain instructions to the connected clients.
+
+\paragraph{Server Interface}
+The manager calls public methods of the server component in the scene when recognizing certain keywords. All public functions of the server form a communication interface for the keyword manager and allow the separation of concerns between the two scene components. While the keyword manager handles voice command recognition, the server manages the clients and network communication with them.
+
+\lstinputlisting[style=sharpc, firstline=581, lastline=608]{code/ServerTcp.cs}
+\captionof{lstlisting}{Each public function changes the class field currentInstruction representing the next instruction to send to one or all clients.}	
+
+\newpage
+\subsection{Communication Flow}
+Specifying an instruction via voice commands when using the head-mounted device and eventually passing it through to the client makes for an interesting communication flow. Developing subsequent applications with the framework requires adding the server component for communication with subsequent clients via a private network and the keyword manager as to activate voice commands. For certain detected keywords, the manager calls the associated server methods configured in the Inspector making use of the server's interface. The server itself sends a continuous flow of instructions to one or all clients. It has an internal field that contains the current instruction to send and its public methods rewrite that field making the server send other instructions to the clients.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/CommunicationFlow.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Block diagram of the communication flow starting from the user to the keyword manager to the server and ending in the client robot.} 
+\end{figure}
+
+\newpage
+\subsection{Client Management}
+The server component ---when activated--- listens for incoming client requests. A successful client connection means a new thread has to be created for its individual server communication. Keeping a tab on all the server's connected clients happens by way of a network reference list. By keeping a current in the list, the user can switch between clients for sending instructions merely by changing the current.
+
+\paragraph{Connection Establishment}
+Our server has a TCP listener that waits on a certain port for incoming client requests. When it receives a new client request, it starts a new thread (or task) that handles all communication to it. It also keeps a reference  to the TCP client in a list for later use so we can search up a client, identify it on the network using its address and send specific data to it. All this is done by using the client's stream socket where bytes of data can be send through. Details about the client's implementation can be found in the next chapter.
+
+\paragraph{Client Selection}
+The user can decide to which connected client he or she wants to send instructions. Using the keyboard or voice commands, we can decide whether to send the same instructions to all connected clients or just to one client. For the latter option, the user can also select to which of the connected clients he wants to send instructions specifically.
+
+
+
+%\paragraph{Preprocessor Directives}
+%The problem with these different libraries is that the compiler has no idea as to know when the written code is destined for the Unity editor and when it's destined for the HoloLens. To alleviate this, one must use preprocessor directives. This is to give indications to the compiler which parts of code to ignore when using the Unity editor and the HoloLens respectively. This meant our developed server consists of two different code sections for different platforms. 
+
+
+%\paragraph{Multithreading}
+%As to allow multiple clients to use the server, the use of threads was necessary. Failing to do so would result in a server that would only manage one client at a time. At the time of writing however, the Universal Windows Platform used by the HoloLens does not support threads instead only allowing us to use tasks. The use of them was combined with preprocessor directives as to give indications to the compiler which code to ignore when using the Unity editor and the HoloLens respectively.
+%\newline
+%it will be using multiple threads in the Unity editor and tasks when using the HoloLens. The first iterations of the server did not use those and this meant that it could only serve one client at all times in its main execution thread. 
+%C\# code in the Unity editor is different from the one used by the HoloLens and other Microsoft products. This became apparent when coding the server. UWP doesn't support threads (at the time of writing).
+%Threads can be seen as workers to be used to fulfil some amount of work while tasks are just promises to complete a certain amount of work in the future eventually. The problem is that a task's interface is different from the thread's interface requiring some code rewriting. 
+
+%\paragraph{Multithreading/tasking}
+%C\# code in the Unity editor is different from the one used by the HoloLens and other Microsoft products. This became apparent when coding the server. As to allow multiple clients to use the server, it will be using multiple threads in the Unity editor and tasks when using the HoloLens. The first iterations of the server did not use those and this meant that it could only serve one client at all times in its main execution thread. 
+
+
+
+%\section{Robot Navigation}
+%Navigation of game objects using our framework should allow overlaying virtual content over a targeted real-life object. However, it must be robust enough as to still do a correct overlay even when the robot is moving. The EV3 brick is the brain of the robot and has 8 ports that can be connected to small motor tracks. The brick serves as its power base and controls these tracks as to provides some movement capabilities. 
+
+
+%\subsection{Desktop Input}
+%Both the HoloLens and the Unity editor have different interfaces that allow the user to control the robot. The advantage of the desktop interface is that it was perfect for debugging the robot when sending displacement instructions with the network.
+
+%\paragraph{Keyboard Input}
+%The most straightforward way to control the robot when using the desktop as host device was by way of its keyboard input. With the keyboard's arrow buttons the user would schedule a new instruction for the robot. An internal variable is constantly changed when pressing these buttons and its current value or 'instruction' is passed through the network to the client for every frame update. This way, the client is provided by a constant bytestream of instructions that constantly tells it what to do.
+
+
+%\subsection{HoloLens Input}
+%Providing a way for the user to guide the robot in a Mixed Reality application gives the developer some creative freedom since traditional input methods such as a keyboard or joystick are non applicable. We can only rely on such methods as voice commands, eye gaze;. The use of these were made furthermore easier by the  Mixed Reality Toolkit\footnote{\protect\url{https://github.com/microsoft/MixedRealityToolkit-Unity}} developed by Microsoft\textsuperscript{5}. It provided scripts and resources for the development of these input techniques.
+
+%\paragraph{Voice Commands}
+%Using the previously mentioned toolkit, it becomes possible to develop a keyword manager script for the HoloLens that would listen and wait for the user to say out loud one of its keywords. These keywords are short and distinct and would trigger certain actions such as making the robot move forward or backward or make it complete certain paths such as a full rotation on itself.
+
+%\paragraph{Buttons}
+%The toolkit offers assets of three-dimensional buttons for the user to use. By linking the click events with the server application, it would send new instructions to the client on every new button click. Using the interface buttons the user is capable of making the robot move in all directions (left, right, front and back).

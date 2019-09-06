@@ -1,0 +1,268 @@
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\chapter{Mixed Reality Robotic Game}
+As a technical evaluation of our navigation framework ---integrated as a software package--- we developed a Mixed Reality application based on it. We start by giving an overview of the hardware being used for the game. Because the framework's server component can be hosted on two devices with different game views, we discuss both of them separately. Subsequent sections cover the implementation of the game. This includes setting up the internet network for communication, the usage of the framework for our specific application and the development of the client which is not part of the framework. 
+
+\section{Hardware}
+Our application has a server component developed in the C\# programming language that is compatible on two devices. It can be hosted on a desktop computer with the Unity editor (version 2018.3.14f1) for debugging purposes and the HoloLens\footnote{\protect\url{https://en.wikipedia.org/wiki/Microsoft_HoloLens}} ---a head-mounted device--- for deployment purposes. The devices use different libraries for the same programming language prompting us to write two code snippets in the same file separated by preprocessor directives. Our system uses an internet network for the client(s) and server to communicate with each other. Establishing such network required using a D-Link\footnote{\protect\url{https://en.wikipedia.org/wiki/D-Link}} router. The client program runs inside a Lego Mindstorms EV3 brick\footnote{\protect\url{https://en.wikipedia.org/wiki/Lego_Mindstorms_EV3}} equipped with servomotors for robot movement. As for the server program, it runs inside a desktop computer when using the Unity\textsuperscript{3} editor when debugging and the Microsoft HoloLens when deploying.
+
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/Hardware.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{We used a router for network communication, HoloLens for Mixed Reality and Lego Mindstorms robots to host the client.}
+\end{figure}
+
+\newpage
+\section{Application Overview}
+Our final robotic game is comprised of different Unity scenes and a client program written in the Java programming language. The former was developed with the Unity editor and the latter with the Eclipse\footnote{\protect\url{https://www.eclipse.org/}} development environment. Scenes can be hosted on the Unity editor or the HoloLens to enable Mixed Reality. The client application is hosted on the Lego Mindstorms robot with all devices being connected to a private network to allow for communication.
+
+\subsection{Scenes}
+Due to deployment issues with the HoloLens ---discussed in detail in the thesis' conclusion chapter--- we created different scenes with some functionalities disabled for proper deployment on our head-mounted device. Doing so allowed us to shoot footage for the final demonstration video. We make the distinction between the CompleteScene.unity scene with all framework components added and the DemoScene.unity scene with object tracking disabled.
+
+\subsection{Client Application}
+The client was developed without making use of the framework. It provides movement by controlling the servomotors on its host device made possible by the leJOS\footnote{\protect\url{http://www.lejos.org/}} firmware. Network communication is also managed by the client polling its network endpoint continuously for new server instructions.
+
+\subsection{Networking}
+To allow for communication between the scene's server game object ---containing the framework's server script--- and the client application hosted on devices with network capabilities, a private network had to be established. This was achieved by configuring a D-Link router.
+
+\newpage
+
+\section{Complete Scene}
+As was mentioned previously, a scene is a collection of game objects that each have specific functionality. Scenes can be seen game levels allowing us to split our game application in different parts. CompleteScene.unity has all game objects required to activate all framework functionalities. The scene works perfectly on the Unity editor but had trouble deploying on the HoloLens due to the tracking engine, hence the reason we have another scene for our application. Issues with the immersive device are covered in more detail in the conclusion section.
+
+
+\begin{center}
+\begin{tabularx}{\textwidth} {|X|X|X|}
+	\hline
+	 & Unity editor & HoloLens \\
+	\hline
+	User Input &  Yes & No \\
+	\hline
+	Spatial Awareness & Yes & No \\
+	\hline
+	Object Tracking & Yes & No \\
+	\hline
+	Navigation of Virtual Objects & Yes & No \\
+	\hline
+\end{tabularx}	
+\caption{All framework functionalities got activated with the complete scene on the Unity editor. Deployment on the HoloLens was unsuccessful. }
+\end{center}
+
+
+\subsection{Composition}
+Activating the framework requires adding new game objects to the scene and binding the framework's scripts and virtual objects to it. The virtual objects have to be placed in the environment as to be visible for the user.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/CompleteSceneOverview1.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{The blue icon represents the camera for the HoloLens device configured using Microsoft's HoloToolkit.}
+\end{figure}
+
+\paragraph{Voice Input Manager Object}
+This empty game object contains the framework's Keyword Manager script and activates the voice command functionalities. It contains no other components such as meshes or other scripts.
+
+\paragraph{Server Object}
+This game element contains the framework's server script enabling the server component in the scene. It also has a three-dimensional text mesh that can be changed by the server to signal events happening to the user.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/CompleteSceneOverview2.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Inspector panel with the server script added and a Text mesh for notifications. The scene also contains user manual meshes for both devices.}
+\end{figure}
+
+
+\paragraph{TargetRobot Object}
+This component could be added after proper configuration of the Vuforia engine on Unity. Its purpose is to identify a target in the environment based on a provided 3D scan, track it in the environment and overlay it with virtual content. A scan of a Mindstorms robot is provided by the framework to aid in this and can be imported to the scene by opening it. The object contains Vuforia's Object Target Behaviour script together with a virtual object bee as its child. This virtual object will be mapped on the physical object when identified in the environment.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/TargetBehaviourOverview.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Inspector panel with the server script added and a Text mesh for notifications. The scene also contains user manual meshes for both devices.}
+\end{figure}
+\newpage
+\paragraph{MixedRealityToolkit}
+The framework has a folder with the source code for Microsoft's HoloToolkit to enable spatial awareness in derived MR applications. Installation requires opening it on the Unity editor, our scene has an object for this toolkit with configuration happening with the inspector panel by selecting it. 
+
+\paragraph{Meshes}
+Virtual objects in our robotic game can be used for different purposes. The virtual bee asset was included in the framework to overlay it over the target, this is to show that object tracking was successful. We added 2 three-dimensional manuals for usage on both the HoloLens and the Unity editor to our scene. If the HoloLens would be used, the manual for the editor would disappear and the same goes for when we were to use the editor. Including manuals makes the application more user-friendly, they were not provided by our framework but developed independently for our game.
+
+\newpage
+\section{Demonstration Scene}
+Our demo video was shot using the demonstration scene. It does not have all the functionalities of the other scene but could at least be properly deployed on the HoloLens. Our immersive device had trouble working with the Vuforia engine for object tracking and removing it from the scene allowed for proper deployment. Hence, the scene has all game objects of the other scene except for the TargetRobot to allow object tracking.
+
+
+\begin{center}
+	\begin{tabularx}{\textwidth} {|X|X|X|}
+		\hline
+		& Unity editor & HoloLens \\
+		\hline
+		User Input &  Yes & Yes \\
+		\hline
+		Spatial Awareness & Yes & Yes \\
+		\hline
+		Object Tracking & No & No \\
+		\hline
+		Navigation of Virtual Objects & No & No \\
+		\hline
+	\end{tabularx}	
+	\caption{By disabling the Vuforia engine for object tracking, deployment on the HoloLens immersive device succeeded.}
+\end{center}
+
+\section{Client}
+Development on the client system component was done without making use of our navigation framework. It is a Java application comprising two classes (see Appendix A) hosted on the Mindstorms robot that has access to our private network and connects to the server given its IP address. It then continuously polls its input socket stream for new instructions. The server keeps a list of all connected clients and creates a thread ---or task when using the immersive device--- for every one of them. Each thread handles the communication to exactly one client allowing multiple devices to receive instructions from the server.
+
+\subsection{Lego Mindstorms Robot}
+As moving ground unit, we used a programmable robot based on Lego building blocks with the Lego Mindstorms EV3 Intelligent Brick as its brain. It allows to upload code and functions as the robot's controller and provides its power to run the motors and sensors. There was however a problem with its firmware. Lego only offered the Ev3 Programmer App\footnote{\protect\url{https://www.lego.com/en-us/Mindstorms/apps/ev3-programmer-app}} to be used on the Mindstorms robot to reprogram it. This only consisted of a primitive drag and drop programming interface and it was too limited to allow for some real coding.
+
+\paragraph{leJOS Firmware}
+The programmable brick's firmware limitations prompted us to use leJOS\footnote{\protect\url{http://www.lejos.org/}} as a replacement. It includes a Java virtual machine allowing us to program our robot with the Java programming language. The installation involved uploading it on an SD card and inserting it in the EV3 brick. Starting the brick with the card would configure it to use the replacement firmware. Writing the Java code involved using the Java libraries for the leJOS firmware allowing us to have access to the brick's motors and sensors. By simply using the brick's IP address, we could execute our code and upload it to the brick. 
+
+\paragraph{Libraries}
+Aside from firmware, leJOS also offers a variety of Java libraries to support programmers in using the brick's hardware given of course that it uses its firmware. Importing these libraries granted us access to the brick's screen and connected motors. Each brick component ---be it the screen or the connected motors--- has their own set of interface methods that we can use in implementing class methods. We can go as far as to make extended trajectories for the robot to follow such as doing a full 360 degree circle or just implement a simple instruction to move forward for a second.
+
+\subsection{MotorOps Class}
+As to make the code cleaner, all functions involving operating the robot's hardware are contained in one class. In the client class, we instantiate it as an object and use its public methods to operate the brick's hardware. These operations include changing the screen text or moving the tracks in certain directions to go left, straight or turn around. The track directions can be used to implement certain tricks such as pivoting on its axis.
+
+\paragraph{Movement Methods}
+These methods are used to move the robot based on the instructions received at the client's endpoint. They call the interface methods of the brick's hardware and follow each other in quick succession to move the robot in any way desired: left, right, forward or backward. It also has one stopAll method that ---as the name suggests--- stops all motors and that gets called when the client has no instructions from the stream. 
+
+\paragraph{Other Methods}
+The brick has a small screen for menu navigation but can be used during our program execution to display text messages. We developed the screenMessage method that takes a string to print on the screen which proved useful for debugging purposes.
+We implemented some simple tricks on the robot to test how synchronised both tracks work together. One method allows doing a 180 degree spin while the other does a full spin on its axis. It required some calibration of the time that the motors had to run in inverted directions.
+
+\paragraph{Robot Coordination}
+The EV3 brick functions as the robot's brain and hosts the client application. Amongst its hardware, it features 4 output ports to which servomotors can be connected and receive instructions individually. For our prototype, the client robot is fitted with two track servomotors with each instruction for the client sending commands to each of them.
+%\newline
+Passing instructions on our prototype happens with a continuous stream on the client with each received instruction overriding the previous one. Except for stunts, no amount of time is specified in which the robot has to move in a direction as this would make the robot movement less fluent since each instruction would make the robot start and stop.
+If the user does not send any instructions of his own, the stop command for the robot gets send through as a default making the client stop. Each direction command requires to send instructions to both servomotors as to override any possible previous commands. Going left requires to send instructions to the right servomotor track and stopping the left servomotor. The same method applies for when wanting to turn left. Going forward or backward requires telling both servomotors to go forward or backward respectively with both instructions have to be sent simultaneously inside the invoked function. For certain instructions such as performing predefined stunts, an amount of time has to be specified for each servomotor as to allow for synchronisation. Pivoting the robot for 360 degrees requires giving an amount of time with which motors have to move in opposite direction.
+
+\newpage
+\lstinputlisting[language=Java, firstline=69, lastline=81]{code/MotorOps.java}
+\captionof{lstlisting}{The two following methods implement robot movement to the right and a general stopping method for all motors. }	
+
+
+\subsection{Client Class}
+This class manages communication with the server on the private network and interpreting the messages it gets from the network. At instantiation, it tries to connect to one of the server's ports on a specified network IP address and instantiates a MotorOps object for all robot movement. When connection to the server succeeds, it listens to its network inputs for data packets. Based on the received packets, it summons certain public methods of the MotorOps objects to move the robot.
+
+\paragraph{Stream Socket}
+As to allow the it to receive data over the established computer network, the client is making use of stream sockets. This type of socket provides a connection-oriented and unique flow of data without record boundaries. They are implemented on top of TCP used by the router so that applications can run across any networks using the internet protocol suite\footnote{\protect\url{https://en.wikipedia.org/wiki/Internet_protocol_suite}}.
+The client itself only sends a client connection request to the server on the port it is listening to. The client afterwards will not send anything to the server with its socket but merely polls its input stream continuously to see if there are new instructions from the server.
+
+\newpage
+\lstinputlisting[language=Java, firstline=62, lastline=82]{code/Client.java}
+\captionof{lstlisting}{This function gets called continuously to poll the client's input stream for messages of the server. }	
+
+
+\paragraph{Stream Interpretation}
+Each character that gets passed through the network represents an instruction to the client. It gets interpreted as an instruction to go forward, backward, left, right or just stop moving. They each follow each other up quickly since they get passed as a stream of bytes through the network. This is why every called method for one instruction starts and ends quickly for the next instruction to be applied on the robot's motors. If on the server side no new movement gets specified by the user with voice commands, then a stream of stop instructions gets passed through the network. This is to make sure the client will stop moving if no instructions were given since every passed instruction calls a method that activates certain motors to move in a direction.
+
+\newpage
+\section{Network}
+For the communication between the client and server, it was necessary to setup our own private internet network using a router device. It used a modem for cable internet connection and required further configuration using the router's installation assistant\footnote{\url{https://eu.dlink.com/fr/fr/support}} such as setting the password for the network and the admin account. Our network uses the internet protocol suite\footnote{\url{https://en.wikipedia.org/wiki/Internet_protocol_suite}} and associates a network (IP) address to all connected machines as to allow identification. This would also allow all connected devices to forward data packets to each other.
+
+
+\section{Views}
+Our robotic game is comprised of Unity scenes, the client application and the private network as its main components. Scenes can be hosted on both a desktop computer and the HoloLens device differing strongly in ---among others--- user input methods. This makes for different user perceptions of the game world depending on the host device referred to as the game view. 
+
+%making for different game views ---what the user perceives of the game  at any given moment--- They requiring different interfaces to be developed for each.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/DeviceInterfaces.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Game views of the application on the Unity editor (left) and the HoloLens device (right): both have a manual and notifications text.
+	}
+\end{figure}
+
+\subsection{Unity Editor}
+Our desktop computer has a simple screen for the user to perceive and a keyboard for user input. The main components perceived by the user are the manual, a game mesh explaining which buttons to press to trigger certain actions. Our game view also has a notifications text that displays important warnings for the user such as when a new client got connected.
+Our game's keyboard lay-out is hard-coded meaning the buttons cannot be changed. But this should not matter since the controls are straightforward. You just use arrow buttons for robot movement and can press the A key to send instructions to all connected clients and the Z key for just one client. Going through all connected clients happens with the C key. Pressing a button results in changing the notifications text in the game view to signal it to the user.
+
+\subsection{HoloLens}
+Being an immersive device to enable Mixed Reality, the HoloLens has no tangible interface requiring us to find other input methods. We settled for voice commands being easy for the user to master since he only has to remember the keywords to use. Our game view on the HoloLens is quite similar to the view on the Unity editor. We also provide a user manual virtual object that floats in the Mixed environment for the user to see explaining which keywords the recognizer listens to. There is also a three-dimensional text notifications mesh for the user to see as to be informed of events happening in the system such as which keywords got successfully recognized. For the application to work on the HoloLens, the object tracking functionality had to be disabled. Playing the robotic game on the HoloLens is limited to moving the robot with voice commands and perceiving the manual as virtual object.
+
+%\begin{figure}[!htb]
+%	\includegraphics[width=1.0\textwidth]{images/HoloLensInterface.PNG}
+%	\captionsetup{width=1.0\textwidth}
+%	\centering
+%	\caption{In the MR environment, the user manual ---showing the available voice commands--- and the notifications text get displayed. }
+%\end{figure}
+
+%\section{Demonstration}
+%We explained how each component of our application has been implemented. Some of which used our navigation framework, this is where we 
+
+
+%The user must be able to send instructions to the application's client robot indicating how it must move in the MR environment. Doing so happens by way of a very simple interface and voice commands. Because of technical limitations, we were not able to use waypoints in our environment to steer the robot towards them with a path-finding algorithm. This is further discussed in our reflection section of the thesis conclusion.
+%Our HoloLens application therefore uses voice commands with a voice manager that reacts on certain keywords being spoken out loud. These keywords trigger the server to send specific instructions to the clients.
+%For ease of use, the user can perceive a 3-dimensional user manual in the MR environment explaining how to use the application on the HoloLens device.There are text notifications in the environment appearing to the user about important system events such as the keywords being understood or the server being started.
+
+
+
+
+%\subsection{Server}
+%As mentioned previously the framework's server component is a Unity\textsuperscript{3} scene object with a server script attached to it. The established server is capable of listening to new client requests and can handle multiple clients at once. Within our prototype application, the whole Unity program is hosted on the HoloLens. 
+
+%\subsection{Client}
+%The client is hosted on the Mindstorms robot with the EV3 brick ---a small computer--- functioning as its brain. Having less computation abilities compared to the HoloLens, it only takes on a client role in the application. It waits for the server to send data packets with instructions through the network and moves in the environment in accordance with what was sent. The brick is connected with tracks as to allow for basic movement.
+
+%\subsection{User Interface}
+%The user must be able to send instructions to the application's client robot indicating how it must move in the MR environment. Doing so happens by way of a very simple interface and voice commands. 
+%Because of technical limitations, we were not able to use waypoints in our environment to steer the robot towards them with a path-finding algorithm. We settled for voice commands with a voice manager that reacts on certain keywords being spoken out loud. These keywords trigger the server to send specific instructions to the clients.
+%The environment has a three-dimensional text that changes for certain events such as the server start-up or on certain keywords being detected by the voice manager.
+
+
+%\subsection{Deployment Issues}
+%Some of our initial functional requirements of the related work section were not achieved because of deployment issues with the HoloLens. The idea of using waypoints and path-finding to guide the robot to an end destination had to be scrapped because our toolkit for object tracking could not be integrated properly with the deployment of our application on the HoloLens. Consequently, correct navigation of virtual information on the target was not achieved because of this integration issue.
+%\newline
+%On our desktop computer however, the object tracking toolkit worked fine. By getting the Unity editor into play mode and putting the target robot in front of the laptop webcam, our application could identify it in the environment and overlay a virtual bee on top of it. The virtual information could also be correctly placed when moving the robot around.
+
+
+%This does not matter since the client is not supposed to do a lot of computation in the application only being required to poll its input endpoint for new data packets of the server. The role of a client is to be a requester of a service where the server functions as the provider of that service. One of the application's requirements states that object tracking should be possible even in a changing, dynamic environment.The brick is connected with tracks as to allow for basic movement as to show that even when the client is dynamically moving, we can show that object tracking is still achieved.
+
+
+ %client should therefore have mobile capabilities as to show that object tracking is still possible even when the target is moving. The robot has some tracks connected to the brick to allow for movement.
+
+
+%Since the server is hosted on the HoloLens and provides the possibility of user input, the client must have 
+
+%It is not supposed to do a lot of computation f
+
+%Using Mixed Reality, new environments can be created by merging virtual elements to the physical world we can observe. This is all made possible with the help of immersive technologies like the Microsoft HoloLens. Its spacial mapping capabilities allow us to track a Lego Mindstorms robot around and map computer-generated elements around it even in a dynamically changing environment. The user is also offered an interface to steer the ground robot around by selecting waypoints in the environment of where it should go or pressing direction keys to indicate to where it should go. 
+
+%Using spacial mapping, they can track physical robot around and offers a way for the user to steer the physical Mindstorms robot in that environment. This can be done in a few ways which will be discussed further.we will be able to display our virtual elements in the environment for the user to see. They will follow a Lego Mindstorms  physical robot will be controlled by a user using a head-mounted device. Some virtual objects will be hovering over the robot using our developed navigation framework. For the terrain navigation, the user is able 
+
+%\subsection{Setup}
+%The focus of this thesis was to create a framework for the navigation of game objects inside a dynamically changing environment.
+
+
+
+%\section{Architecture Design}
+%We hinted in the related work section at different possible architectures for our robotic game. More notably the choice between a peer-to-peer architecture and a client-server architecture. The first of which offers great scalability and reliability because of having a decentralized workflow. Despite of these good qualities, we have opted to use a client-server based architecture. We discern a couple of reasons for doing so. 
+%\newline
+%Our level of deployment for now is of a small scale with only one HoloLens and one or two robots being deployed. There should be no tight bottlenecks for our application unless we would increase the number of clients for our HoloLens server significantly. Changing the architecture to improve scalability is still viable for future development.
+%\newline
+%Implementing a decentralized peer-to-peer architecture is quite complex when it comes to the server implementation. The HoloLens would be the server in the application and would have to communicate permanently with all neighbouring servers but also its connected clients. Resulting in a complex flow of communications.
+
+%\section{User Interface}
+%Ground navigation of the robot should be smooth and easy for the user requiring a well-developed user interface. We have used the Mixed Reality HoloLens Toolkit\footnote{\protect\url{https://github.com/Microsoft/MixedRealityToolkit-Unity}} in doing so. It provides some great assets, documentation and examples for building great user interfaces. When it comes to the ground navigation of the robot, the user can choose to use directional arrows on the user interface. By finger pressing them, he can specify in which direction to move the robot. The user can also specify waypoints in the environment for the Mindstorms robot to follow. This got realised by way of spacial mapping on the A* path finding algorithm.
+
+%\section{Requirements for a Robotic Game}
+%As was teased in the related work, our solution had requirements to fulfil to be considered successful. 
+
+
+%\subsection{Robot Navigation}
+%\subsection{User Input}
+%\subsection{Object Tracking \& Mapping}
+%\subsection{Spatial Awareness}
+
+%\section{Target Acquisition}
+%With the help of eye gaze and neck movement, the user should be able to select a virtual object -an enemy- and instruct the robot to direct its firing on it.
+
+%\section{Airborne navigation}
+%Airborne navigation is a big part of the thesis: game objects will be hovering on top oftheir targets so some basic artificial intelligence will have to be programmed.

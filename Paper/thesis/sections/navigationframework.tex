@@ -1,0 +1,186 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Navigation Framework}
+In this chapter we give our theoretical solution for the problem domains discussed in the introduction: a framework for the navigation of game objects inside a dynamic Mixed Reality environment. It represents a package of resources that ---added to an existing project--- can be moulded to the application one would like to develop. Since the framework has been developed with the Unity\footnote{\protect\url{https://unity.com/}} engine, some of its subsequent terminology will be explained here. This is to allow readers unfamiliar with the game engine to grasp our explanation. For one of our objectives, we explore the feasibility, advantages and disadvantages of the peer-to-peer model for our framework compared to the client-server model. Subsequent chapters in this thesis cover its implementation and present a Mixed Reality game developed using the framework package.
+
+\section{Overview}
+In the related work section we specified our framework's functional requirements. As the development process went along, it became clear that some requirements had to be modified due to implementation challenges. Our encountered issues will be discussed later in the conclusion chapter.
+
+%\subsection{Robot Navigation}
+%The framework must be able to correctly place virtual objects in a dynamically changing environment. Our target on which virtual information must be placed, is a small mobile robot that we are able to steer with voice commands. The simple keywords that the user expresses, allows him to move the robot to the left, right, forward and backward. He is also able to stop the robot completely and restart him with the voice keywords.
+
+%\subsection{User Input}
+%The user needs some methods of input to steer the robot in some direction in the MR environment. For this, our initial idea was to allow the user to indicate waypoints within the environment and use path-finding algorithms to steer the robot in a certain direction. However, because of deployment issues, we had to alter our input methods. 
+%\newline
+%The user can use voice commands to ur initial requirements wanted us to allow 
+\subsection{Spatial Awareness}
+The framework is capable of grasping certain insights of its surroundings given some visual input to process provided by a webcam or the HoloLens' sensors. By generating a set of meshes to represent the environment's geometry based on the collected data, the framework can correctly place virtual objects in the environment and allows for correct interaction with real world components. Spatial awareness was realised by using Microsoft's HoloToolkit\footnote{\protect\url{https://github.com/Microsoft/MixedRealityToolkit}} and some configuration of our editor. More details about this are given in the following section.
+
+
+\subsection{Object Tracking}
+Identifying a physical object in the environment of limited size ---called a target--- required configuring Unity with the Vuforia game engine. The framework package has a scan of an EV3 Lego Mindstorms\footnote{\protect\url{https://www.lego.com/en-us/themes/mindstorms}} robot to properly set up the tracking engine. It is capable of finding one or more of these robots in the environment and the number of these to find depends on further configuration. Details on how to do this can be found in the provided README file of the package. Tracking with the engine was achieved by way of deep learning\footnote{\protect\url{https://en.wikipedia.org/wiki/Deep_learning}}. It is a technique of artificial intelligence that builds up artificial neural networks to progressively extract higher level features from raw camera input. Every higher layer in the network tries to identify more advanced diagnostics of the given data compared to the layer directly under it. Further details on the used technologies are given later on in the paper.
+
+\subsection{Navigation of Virtual Objects}
+Identifying and tracking the target object is the first step to overlay virtual content on top of it. Proper configuration can be done by referencing the README file and the provided three-dimensional scan for the tracking engine. Our package also has a folder with virtual resources that can be placed on top of the target specified with the scan resource. The user is able to set up the number of similar looking targets to track in the environment.
+
+\subsection{User Input}
+In the thesis' introduction, we teased the idea of using eye gaze and selection for our immersive device to specify waypoints in the environment for the clients to follow. However ---due to technical difficulties with the immersive device--- we had to use other input methods. We opted as an alternative for voice commands, the user can setup keywords triggering the server in sending certain instructions to the connected clients. This requires the host device to be equipped with a microphone to recognize voice commands. When running the server component on the Unity editor, the input method is the host device's keyboard.
+
+\subsection{Client-Server Architecture}
+For one of our objectives, we wanted to explore the feasibility of implementing a peer-to-peer architecture for our framework. Unfortunately, we did not have time to implement this due to issues with Microsoft's libraries on the HoloLens during development. We instead went with the client-server architecture. Our system design section offers a more detailed explanation on this together with an overview of the cons and pros of both models and existing technologies. The package has a server component that can be hosted on different devices and ---in the context of Unity--- can be activated by adding it to the current game scene. By way of a computer network shared by the server, other devices are able to send connection requests to it and receive instructions. There is a clear master-slave relation between the two with the server communicating all the user input to all connected network devices.
+
+\section{Terminology}
+Unity\textsuperscript{1} is a cross-platform game engine that can be used to implement ---among others--- augmented reality and virtual reality games. The first iteration of the engine was launched in 2005 and its main purpose was to make game development more accessible to the public. As of 2018 it has been extended to over 25 platforms. Before discussing our package in more detail, we ought to introduce basic terminology on the usage of Unity\textsuperscript{1} to make sure readers who are not familiar with the engine can grasp our explanation.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/UnityEditorInterface.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Unity editor interface: 1. opened scene containing its objects 2. view on the scene 3. project overview 4. content of Scripts folder. Notice how the Scenes folder is not part of the package.} 
+\end{figure}
+
+%\subsection{Unity}
+%Unity is a cross-platform game engine that can be used to implement —among others— augmented reality and virtual reality games. The first iterationof the engine was launched in 2005 and its main purpose was tomake game development more accessible to the public. As of 2018 it hasbeen extended to over 25 platforms. Its popularity has prompted the surgeof different toolkits for Augmented Reality. These toolkits are collectionsof software development tools that provide functionalities for the developmentof applications, here in the context of Augmented Reality and morespecifically Mixed Reality.
+
+%\subsection{Toolkits Folder and the HoloToolkit}
+%Unity's popularity has prompted the surge of different toolkits for Augmented Reality. These are bundles of software development tools that aided us greatly in developing this package. Important to notice is that our folder only contains Microsoft's HoloToolkit\footnote{\protect\url{https://github.com/Microsoft/MixedRealityToolkit-Unity}} resources for activating spatial awareness on the HoloLens. When opening the Unity project after adding the package with the toolkit in the assets folder, it will be installed automatically.
+
+
+%\subsection{Vuforia}
+%Allowing for object tracking required some advanced image tracking algorithms. Vuforia\footnote{\protect\url{https://engine.vuforia.com/engine}} had to be configured in a different way for this project. The user has to install it by using Unity's Download Assistant\footnote{\protect\url{https://unity.com/}} ---2017.2 or later--- and selecting Vuforia AR Support.
+
+\subsection{Scripts}
+Our game engine works with code snippets written in the C\# programming language representing classes with a certain behaviour. We wrote the KeywordManager.cs script for voice commands and the ServerTcp.cs script for the server component of our framework. Both can be found in the package's Scripts folder. Activating the snippets' functionalities requires adding them to the current game scene of the application.
+%We wrote 2 code snippets for our that can be added to game objects in one of our scenes to activate their behaviour. Our package has two scripts and the first one 'ServerTcp' represents our framework's server. The 'KeywordManager' script represents our keyword manager responsible for voice command recognition.
+
+\subsection{Scenes}
+A scene in Unity is a piece of your game containing a variety of objects to make it display certain behaviour. These scenes can be opened and executed individually and can be extended by users to suit their derived software projects. Our framework package does not contain scenes. Rather, the scripts and other resources it offers can be added to a developer's scene to make derived applications from it. Our Mixed Reality game of the next chapters ---that serves as the framework's technical evaluation--- is a scene in Unity with all framework components added.
+
+\subsection{Toolkits}
+During development, we made use of software toolkits ---which are bundles of development tools--- that aided us greatly in realising our framework package. We used Microsoft's Mixed Reality toolkit for spatial awareness and the Vuforia for object tracking. Details of which will be covered in our robotic game chapter where we focus on how our game engine had to be configured to allow proper functioning of said toolkits.
+
+
+\subsection{Inspector Window}
+A scene is made up of game objects containing scripts, sounds, meshes and other components. As to view the details of a certain game object, the user can select and inspect it more closely with the Unity inspector window. For an object, it shows all elements contained within it and allows for further configuration on the Unity editor.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/UnityInspectorWindow.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{The red part of the Unity editor interface is the Inspector window to see a game object's components.} 
+\end{figure}
+
+\section{Framework Package}
+The framework was built using Unity and represents a bundle of resources to help in the development of derived applications. They are organised into 4 categories with their own folder: Scripts, Scans, Toolkits and Holograms. Scenes are not included in the package but are developed by using the 4 types of resources of the package. Scenes are games that can activate the framework's functionality by including its scripts and configuring the toolkits. They provide spatial mapping and object tracking functionalities and the scripts the server component and voice command manager.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/FrameworkPackage.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Our Unity assets folder contains the package: it contains a bee hologram, a Scripts folder with 2 scripts and the Microsoft HoloToolkit.} 
+\end{figure}
+
+\subsection{ServerTcp.cs}
+Our framework's server functionalities is provided by given script. It gets activated by adding it to the current scene and running that scene on the Unity editor or deploying it on the HoloLens device. We developed 2 scenes for our game application because deployment issues made our device enabling Mixed Reality crash when the Vuforia Engine was included. We made a scene with object tracking and one without. Both scenes use the server component regardless because it caused no deployment failures.
+%A scene in Unity is a piece of your game containing a variety of objects to make it display certain behaviour. These scenes can be opened and executed individually and can be extended by users to suit their derived software projects. For our framework, we had some deployment issues on our immersive device and had to make two scenes. The first scene has the object tracking functionality disabled as to allow for deployment on the HoloLens and the second scene has all components for the functionalities advertised in previous section.
+
+
+\subsection{KeywordManager.cs}
+Our second script has the task of recognizing voice commands and thus of guaranteeing user input. As the script's name suggests, it manages the recognition of certain keywords being spoken by the user. Keywords in voice recognition are short, distinct messages that trigger certain actions upon being recognized. The manager ---when recognizing commands--- prompts the server into sending instructions to its clients. Developers making use of our package can alter these keywords as to make the manager react on other voice commands. Altering the keywords is possible without changing the code itself by using the inspector panel.
+
+\subsection{Holograms}
+Our framework package has a Holograms folder containing a virtual bee asset. It was added as to properly configure the object tracking engine since a virtual object ---the virtual bee--- has to be added to the scene to be mapped on the physical target when identified. Developers are free to use other virtual resources by browsing Unity's asset store\footnote{\protect\url{https://assetstore.unity.com/}}. We only provided the virtual bee asset for user convenience.
+
+\subsection{Scans}
+Vuforia stands in for object tracking and needs indications of which physical components to look for in the environment. Our package has a three-dimensional scan of a Lego Mindstorms EV3 robot that can be added to the project simply by opening it. Adding a 3D scan object to the game scene and placing a hologram in that object allows the engine to find similar looking physical objects and to map virtual information on top of them. 
+
+\subsection{README}
+The toolkits used by the framework are not part of our contributions. We did not implement these software tools and are using them to realise all functionalities of the framework. Allowing for object tracking and spacial awareness requires extensive configuration of both game engine. Reason why we included a README giving a detailed explanation on how to proceed.
+
+\paragraph{HoloToolkit}
+Microsoft's HoloLens toolkit is added in the Toolkits folder of the package and requires not much further configuration by the user. Merely opening the Unity editor after adding the package to the Assets folder should trigger the import process. Our folder only contains Microsoft's HoloToolkit\footnote{\protect\url{https://github.com/Microsoft/MixedRealityToolkit-Unity}} resources for activating spatial awareness. 
+
+\paragraph{Vuforia}
+Allowing for object tracking required some advanced image tracking algorithms. Vuforia\footnote{\protect\url{https://engine.vuforia.com/engine}} had to be configured in a different way for this project. The user has to install it by using Unity's Download Assistant\footnote{\protect\url{https://unity.com/}} ---2017.2 or later--- and selecting Vuforia AR Support as allow its object tracking functionalities. Finding the Lego robot in the environment requires adding the previously mentioned scan to the engine to use as a target.
+
+\paragraph{Scans}
+Vuforia must know which target object to search for in the physical environment in order to work properly. The Scans folder contains a three-dimensional scan of a Lego Mindstorms robot that can be imported by simply clicking on the scan file. Scanning the robot was made possible by the Vuforia scanning app available on Vuforia's developer portal\footnote{\protect\url{https://developer.vuforia.com/}}.
+
+\section{Spatial Awareness}
+The immersive device had to gain an understanding of the environment it was placed in to allow for the correct placement of virtual objects. Spatial awareness was achieved by way of Microsoft's Mixed Reality Toolkit. Configuring the toolkit required opening the Unity editor to start the import process. The system works by collecting geometric information of its surroundings and representing it as a set of meshed. This would allow for the computer-generated components of our MR environment to interact seamlessly with the real-world environment. In combination with our object tracking software, it would make the whole experience even more compelling.
+
+\section{Object Tracking}
+Navigating a game object within a fastly changing environment requires some advanced image tracking algorithms. In the process of developing our framework, we made use of the Vuforia\footnote{\protect\url{https://engine.vuforia.com/engine}} engine providing extensive object recognition and tracking capabilities. 
+Being the intellectual property of a private company, the engine's library is closed-source meaning its code is not shared with the public. Although its implementation details remain a secret to us, we are aware of the technology principles it uses. Allowing for object recognition and tracking happens by way of artificial intelligence\footnote{\protect\url{https://en.wikipedia.org/wiki/Artificial_intelligence}} and in particular deep learning\footnote{\protect\url{https://en.wikipedia.org/wiki/Deep_learning}}. It works by creating artificial neural networks consisting of multiple layers to progressively extract higher level information from raw visual input. Every higher layer tries to identify more advanced characteristics of the footage compared to the layer directly under it. We stress that ---because of the library being closed-source--- we did not implement deep learning or any of its source code ourselves.
+
+
+ %as to allow object recognition and tracking in a dynamic environment. It works by creating artificial neural networks consisting of multiple layers to progressively extract higher level information from raw visual input.
+
+%\subsection{Deep Learning}
+%The engine makes use of artificial intelligence and in particular deep learning as to allow object recognition and tracking in a dynamic environment. It works by creating artificial neural networks consisting of multiple layers to progressively extract higher level information from raw visual input. Every higher layer tries to identify more advanced characteristics of the footage compared to the layer directly under it. The neural network is provided with a scan of the real-life object and would first try to identify the edges of this target. It would then go on to match more advanced attributes of the real-life object until it finds a suitable match in the environment. This process makes object tracking easy and allows to map virtual information on the identified target. 
+
+
+\section{Voice Command Recognition}
+Our keyword manager script allows for voice command recognition when activated on a new Unity scene of a derived application. Unity provides us with a keyword manager library to which we can set words that trigger the sending of an instruction to the client. With voice commands, it is possible to set different words on which actions should be triggered. Because our framework is supposed to be a helping tool for developers to built derived applications, the voice commands of the keyword manager can be configured by using the editor's interface. The user is able to set the list of keywords to listen for and the subsequent method of a script to call for when a keyword gets detected. This means the code does not have to be altered by the user but everything can be done via the Unity inspector panel.
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/KeywordManagerConfiguration.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Inspector panel: the user can specify the number of keywords: the keywords themselves and the method to call.} 
+\end{figure}\mbox{}\newline
+It should be noted that the keywords have to be ---by preference--- short and easy to pronounce. The recognizer is not able to understand a sequence of keywords so inserting sentences is out of the question. If we were to recognize full sentences, Unity's dictation recognizer\footnote{\protect\url{https://lightbuzz.com/speech-recognition-unity/}} would be much more suitable.
+
+\section{Communication}
+Our framework provides a server script that ---when included to the Unity scene of an application--- can communicate by way of a private network to the host devices that have successfully connected to it. All devices connected to this network using the Internet protocol suite\footnote{\protect\url{https://en.wikipedia.org/wiki/Internet_protocol_suite}} have their own unique IP address. This allows them to be identified on the network and for other devices to send data packets to them. In our framework, the server manages multiple clients. It first listens on one of the ports of the host device for incoming client requests and ---after accepting the connection--- the server creates a thread (or task depending on the host) to handle its communication with that client specifically. For each connected client, it keeps a reference to it in a list allowing the user to select to which client data packets should be sent. We can choose to send the same instructions to all clients or just one selected client.
+Both the server and the client application are using stream sockets\footnote{\protect\url{https://en.wikipedia.org/wiki/Network_socket\#Stream_socket}} for network communication transmitting data as a sequence of bytes. Before this can happen though, all instructions are encoded using the UTF8 character encoding scheme and ---after being passed through the network to the client's endpoint--- are decoded using the same scheme. 
+
+\section{System Design}
+Based on the functional requirements specified in the literature study, we define our architecture best-suited for the prototype application we would like to develop. Though the client-server model has suitable characteristics in that regard, we would like to explore the feasibility of using the peer-to-peer model. We will therefore discuss both and see how achievable they each are given the resources at our disposal.
+
+\subsection{Client-Server Model}
+With this model there exists a clear role between the providers of a service ---called the servers--- and the requesters of a service ---called the clients--- with both communicating using an established computer network and hosted on separate devices. This makes for a centralized application with the server providing the majority of computation. 
+
+\paragraph{Advantages}
+The client-server model boosts characteristics that make it suitable for our prototype Mixed Reality application. Our package provides a server component that ---added to a Unity scene--- can manage multiple clients on two possible host devices. We implemented a stand-alone client program independent from the framework that could connect to this server. This clear separation of component roles maps perfectly on the client-server model.
+%\newline
+Our architecture's centralised nature makes for a simple communication flow between servers and clients compared with the the peer-to-peer model where there is no clear distinction between system roles.
+%\newlineThe HoloLens immersive device would host the server and is capable of managing multiple clients. 
+As far as testing is concerned, the server worked fine with two clients running on EV3 bricks. If the number of service requesters would be too high however, it could be overworked. Up-scaling the application is simple with our chosen model.  Adding an appropriate amount of servers for the number of connected clients should suffice to efficiently share the requesters' workload.
+
+\paragraph{Disadvantages}
+Having clear system roles makes for a master-slave relationship between the servers and clients. The model has system critical components that would slow down or even stop the application if they were to be removed. Because ---as a technical evaluation of the framework--- we are only making a small prototype with only one server component, this potential issue should not occur. 
+
+
+\subsection{Peer-to-Peer Model}
+This model makes no clear distinction between providers and requesters of services. Peers make up the application and are equally privileged with each providing and requesting services to the system participants. They are said to form a peer-to-peer network of nodes. The communication flow is no longer limited from servers to clients but can be from any two peers in the system.
+
+\paragraph{Existing Technologies}
+As was mentioned in the literature study, there are already Augmented Reality systems in existence realised with a peer-to-peer model. This shows that the possibility is there to adapt the model on our framework. The Solaris system\cite{keller2002toward} in that regard allows for a shared Mixed Reality environment where multiple users are able to interact with one another. The system is highly-dynamic adapting very quickly on system components dropping in and out of the established network as they like.
+
+\paragraph{Requirements}
+Compared to a client-server architecture, the server components in the network are now peers and must be able to send requests to other participants if the need would arise. This would be the case when the workload in the application would be unevenly spread and a participant requests assistance from other nodes to manage multiple clients efficiently. The HoloLens device hosting the server is perfectly capable of sending and listening to service requests having multiple ports to do so. 
+
+
+\paragraph{Advantages}
+An architecture that does not have clear roles for its participants has some interesting attributes for the prototype we would like to develop. Using the peer-to-peer model makes for a more robust and flexible system since we don't have any critical components that would stop or slow down the execution of the application. If a peer would break down, the system would adapt dynamically to this and divert possible service requests to other peers.
+%\newline
+%Dividing the workload between its service providers would be much more flexible since all nodes are able to communicate with one another. If a network node would be overloaded by too much clients requests, it can still outsource part of it to neighbouring nodes.
+
+\paragraph{Disadvantages}
+This model provides us with great flexibility for our application with no critical components that could potentially stop its operation. It does ---however--- come with increased implementation complexity since all nodes in the network must provide and request services between each other.
+Having each network component send requests puts a significant strain on the network and would make for a much more complex communication flow.
+
+%since every component would be able to send information to each other. This architecture seemed inappropriate for our small prototype application with only one device having significant computational power.
+
+\subsection{Prototype}
+We eventually settled for the client-server model for our framework and subsequent application. During development, there were incompatibilities between Microsoft's libraries and this required significant time and effort when debugging. Because of this, there was not much time left to implement the peer-to-peer model. Developing a prototype using the peer-to-peer model remains a challenge for future work. It would require the servers to sent requests to each other to stretch out the client workload instead of doing everything by their own.
+
+\begin{figure}[!htb]
+	\includegraphics[width=1.0\textwidth]{images/ClientServerModelDiagram.PNG}
+	\captionsetup{width=1.0\textwidth}
+	\centering
+	\caption{Prototype's architecture: clients hosted on EV3 bricks can establish a connection with the scene's server component to receive instructions.} 
+\end{figure}
+
+%Bigger scale testing should be for future work.I was busy with debugging due to library incompatibilities in Microsoft LibrariesYou didn't have time to implement peer-to-peer. Due to budget limits for prototyping, I will have one server and one client built. Small prototype to show it workds. Bigger scale testing should be for future work.Though the peer-to-peer model satisfies our requirements, the problem is that our prototype is too small to reap the benefits of the model. We only have one HoloLens at our disposal to host our network node with no neighbours to receive and send service requests. This only adds complexity to the server code for features we wouldn't even be able to test out with our limited hardware and the scale of our prototype. The client-server model is relatively simple to implement ---with the servers only having to communicate with the clients--- making it appropriate for the prototype application we would like to develop. We conclude by saying that the peer-to-peer model is feasible to implement but should be used on bigger applications for its benefits of flexibility to outweigh the added complexity. Expanding into a peer-to-peer system can be a good idea for future work.
+ 

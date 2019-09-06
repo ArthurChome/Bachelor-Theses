@@ -1,0 +1,183 @@
+import java.io.BufferedReader;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+
+import javax.sound.sampled.AudioFormat.Encoding;
+
+
+/**
+ * This class represents the TCP client 
+ * who will communicate with the server: 
+ * be it on Unity or the HoloLens.
+ * 
+ * Site of reference: 
+ * https://www.developpez.net/forums/d1608060/java/general-java/apis/io/java-client-serveur-sockets/
+ * */
+
+public class Client {
+	
+	/** Portnumber the client will be polling (listening) */
+	private static int port = 9002; //4002 for the desktop, 9002 for the HoloLens
+	/** Socket for sending information to the server. */
+	private static Socket socket;
+	/** IP addresses that we will be using: one for the Desktop and the HoloLens */
+	private static String IP_Address_Desktop = "192.168.0.102";
+	private static String IP_Address_HoloLens = "192.168.0.1"; //THIS IS THE CORRECT ADRESS (NOT .100).
+	private static String current_IP = IP_Address_HoloLens;
+	
+	/** Streams that we can use to send & receive data from the server. */
+	static InputStream inputServer;
+	static OutputStream outputServer;
+	static DataInputStream in;
+	
+	/** Get the Mindstorms motor management class. */
+	static MotorOps motors = new MotorOps();
+	
+	/** Setup a timer to implement the death clock. */
+	static Timer timer = new Timer();
+	
+	/** Variables that indicate if the client's still trying to connect with the server
+	 *  and whether we already placed the notification that the client is connected. */
+	public static boolean tryConnection = true;
+	public static boolean connectNotificationSend = false;
+	
+	/* Number of tries/attempts to connect with the server. */
+	public static int noOfTries = 10;
+	
+	/** Deathclock: will stop the client program after given number of seconds. */
+	public static void deathClock(int seconds){
+		/** Schedule to end the program in given amount of seconds.
+		 *  We will exit the program execution after given time. */
+		timer.schedule(new TimerTask() {
+			  public void run() { 
+				  System.exit(0);
+				  }
+			}, seconds*1000);}
+	
+	public static void readBytes(){
+
+	    try {
+	        inputServer = socket.getInputStream();
+	        in = new DataInputStream(inputServer);
+	        byte[] buffer = new byte[4];
+	        int read = 0;
+	        
+	        /** Flush() only makes sense in scenarios where data gets written. */
+	        while ((read = in.read(buffer, 0, buffer.length)) != -1) {
+	            //in.read(buffer);
+	            String response = new String(buffer, "UTF-8");
+	            //Flush() only makes sense in scenarios where data gets written.
+	            motors.screenMessage("Server says: " + response);
+	            interpretResponse(response);
+	        }	        
+	        
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	
+	/** Write bytes to the server. */
+	public static void writeBytes(){
+		try{
+			outputServer = socket.getOutputStream();
+			String msg = "POLL";
+		    outputServer.write(msg.getBytes());
+		    outputServer.flush();
+		}
+		catch (IOException ex) {
+	        ex.printStackTrace();  
+	    }
+	}
+	
+	/** This function will interpretate the response of the server 
+	 * to make the client do something. */
+	public static void interpretResponse(String response){
+		/** We have different codes: 
+		 *  - 1<...>: go forward with starting from the second character its duration.
+		 *  - 2<...>: go backward with starting from the second character its duration.
+		 *  - 3: do 180 degrees.
+		 *  - 4: do 360 degrees
+		 * */
+		if (response.startsWith("1")){
+			//int timeLength = Integer.parseInt(response.substring(1));
+			//motors.goForward(1);
+			motors.continueForward();
+		}
+		else if (response.startsWith("2")){
+			//motors.goBackward(1);
+			motors.continueBackward();
+		}
+		else if(response.startsWith("3")){
+			//motors.turnLeft(1);
+			motors.continueLeft();
+		}
+		else if(response.startsWith("4")){
+			//motors.turnRight(1);
+			motors.continueRight();
+		}
+		/** N(o instructions). */
+		else if(response.startsWith("N")){
+			motors.screenMessage("No instructions. Stand-by.");
+			motors.stopAll();
+			
+		}
+		else {
+			motors.screenMessage("Not recognized: " + response);
+		}
+	}
+
+
+	public static void main(String[] args)
+	{
+	
+		String displayBytes;
+		
+		/** Notification that the client was started */
+		motors.screenMessage("Client started. ");	
+		
+		/** Set a death clock for the client: he will die in 60 seconds. */
+		deathClock(80);
+		
+		/** Try connecting a couple of times with the server. */
+		while (tryConnection){
+			try
+			{	/** Insert the public IP address of the server and the port he is listening to. */
+				socket = new Socket(current_IP, port);
+				
+				/** Send a notification that the socket is connected. */
+				if (socket.isConnected() && !connectNotificationSend){
+					motors.screenMessage("Client connected. ");
+					connectNotificationSend = true;
+				}
+				
+				/** Write bytes to the server using the stream (flush). */
+				writeBytes();
+				/** Read the bytes the server put on the stream. */
+				readBytes();
+			
+			}
+			catch(Exception e){
+				noOfTries = noOfTries - 1;
+				if (noOfTries == 0){
+					tryConnection = false;
+					/** After a number of tries, print that the client just could not connect. */
+					motors.screenMessage("Could not connect.");
+					/** Stop everything in 5 seconds */
+					deathClock(5);
+				}
+				
+			}
+		}
+	}
+
+}
